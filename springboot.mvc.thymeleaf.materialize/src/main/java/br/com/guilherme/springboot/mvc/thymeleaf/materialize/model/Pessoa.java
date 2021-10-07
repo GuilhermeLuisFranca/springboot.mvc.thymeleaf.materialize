@@ -32,16 +32,26 @@ public class Pessoa implements Serializable {
 	@NotEmpty(message = "Sobrenome não pode estar vazio")
 	private String sobrenome;
 
+	@NotNull(message = "E-Mail não pode ser nulo")
+	@NotEmpty(message = "E-Mail não pode estar vazio")
+	private String email;
+	
+	@NotNull(message = "Sexo não pode ser nulo")
+	@NotEmpty(message = "Sexo não pode estar vazio")
+	private String sexo;
+	
+	
 	@Min(value = 18, message = "Menor de Idade nao pode")
 	@Max(value = 100, message = "Mais de 100 anos han? insere uma idade correta ai!")
 	@NotNull(message = "Idade não pode ser nulo")
 	private int idade;
+	
 
 	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)/*1 pra muitos, orphan e cascade para consultar tudo pra ser possivel fazer alteracoes
 	que nao sejam bloquedas gracas ao relacionamento de tabela*/
 	private List<Telefone> telefones;
 	
-	private String cep, rua, bairro, cidade, uf, ibge;
+	private String cep, rua, bairro, cidade, uf, ibge;//cep, toda a validacao do cep pra carregar um correto ja esta sendo feito no front usando web service
 	
 	
 	
@@ -111,6 +121,18 @@ public class Pessoa implements Serializable {
 	}
 	public void setIbge(String ibge) {
 		this.ibge = ibge;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 	
 	

@@ -47,7 +47,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 
 	<h1 style="color: #fff; font-family: roboto">Telefones Pessoa</h1>
 	
-	<a style="text-decoration: underline; font-size: 45px" th:href="@{/CadastroPessoa}">Cadastro Pessoa</a>
+	<a style="text-decoration: underline; font-size: 45px" th:href="@{/cadastroPessoa}">Cadastro Pessoa</a>
 	
 	
 	 <div th:each="p : ${telefoneobj}">
@@ -81,10 +81,18 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		 -->
 		<form th:action="@{/addFonePessoa/{pessoaid}(pessoaid=${telefoneobj.id})}" method="post" class="col s12">
 			<div class="row">
-				<input required="required" class="col s6" id="numero" name="numero" placeholder="Numero: (99) 99999-9999 ou (99) 9999-9999">
-				<input required="required" class="col s6" id="tipo" name="tipo" placeholder="Tipo">
-				<input type="submit" class="waves-effect waves-light btn" value="Enviar">
+				<div class="input-fiel col s6">	
+					<input required="required" type="text" id="numero" name="numero" placeholder="Numero: (99) 99999-9999 ou (99) 9999-9999">
+				</div>
+				<div class="input-fiel col s6">	
+					<select required="required" class="browser-default" id="tipo" name="tipo">
+						<option value="" disabled selected>[Selecione]</option>
+						<option value="CELULAR" th:text="Celular">
+						<option value="CASA" th:text="Casa-SERA-RETIRADO-EM-BREVE">
+					</select>	
+				</div>
 			</div>
+			<input type="submit" class="waves-effect waves-light btn" value="Enviar">
 		</form>
 	</div>
 

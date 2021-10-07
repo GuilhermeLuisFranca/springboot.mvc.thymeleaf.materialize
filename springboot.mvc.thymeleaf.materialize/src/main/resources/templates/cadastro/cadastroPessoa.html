@@ -5,8 +5,9 @@
 <title>Cadastro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- link materialize, se a tela for menor que 620 desativa ele -->
+<script>window.onload=function(){x = window.screen.width;if(x < 620){document.getElementById("materialize").href="";}}</script>
+<link id="materialize" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <style type="text/css">
 *{
     margin: 0;
@@ -84,6 +85,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 			</div>
 		<br>
 	
+		<a href="https://www.invertexto.com/gerador-de-cep" target="_blank" style="color: #150C8F; text-decoration: underline; font-size: 25px;">
+			CLIQUE AQUI PARA GERAR UM CEP</a>
 		<!-- 
 		 - seguinda para o formulario de cadastro
 		 -->
@@ -93,7 +96,21 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 					<input readonly="readonly" type="text" id="id" name="id" placeholder="Id: apenas para edicao" th:field="*{id}">
 				</div>
 				<div class="input-fiel col s6">
-					<input required="required" type="text" id="idade" name="idade" placeholder="Idade" th:field="*{idade}">
+					<input required="required" type="number" id="idade" name="idade" placeholder="Idade" th:field="*{idade}">
+				</div>
+			</div>
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s6">
+					<input required="required" type="text" id="email" name="email" placeholder="E-Mail" th:field="*{email}">
+				</div>
+				<div class="input-fiel col s6">	
+					<select required="required" class="browser-default" id="sexo" name="sexo">
+						<option value="" disabled selected>[Selecione]</option>
+						<option value="MASCULINO" th:text="Masculino">
+						<option value="FEMININO" th:text="Feminino">
+						<option value="OUTRO" th:text="Outro">
+						<option value="GENERONULL" th:text="Prefiro-não-dizer">
+					</select>	
 				</div>
 			</div>
 			<div class="row" style="color: #fff;">
@@ -130,19 +147,24 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 			</div>
 			<input type="submit" class="waves-effect waves-light btn" value="Enviar">
 			<button type="button" class="waves-effect waves-light btn" style="background-color: yellow;" onclick="document.getElementById('FormSalvarPessoa').reset();">NOVO</button>
-			<a class="waves-effect waves-light btn" style="background-color: #04FF3F" th:href="@{/listaPessoas}">Listar</a>
 		</form>
 	</div>
 	
 	
 	
-	<form action="pesquisarpessoa" method="post">
-		<div id="divBusca">
-			<input type="text" id="nomepesquisa" name="nomepesquisa" placeholder="Pesquisar" style="color: #1200FF !important;">
-	
-			<input class="btnBusca" type="submit" value="🔍">
+	<fieldset style="border: 3px solid #333A3A;">
+		<legend style="font-size: 25px; color: #22DFEE;">Campo de Pesquisa</legend>
+		<div class="row">
+			<form action="pesquisarpessoa" method="post">
+				<div id="divBusca">
+					<input type="text" id="nomepesquisa" name="nomepesquisa" placeholder="Pesquisar" style="color: #1200FF !important;">
+			
+					<input class="btnBusca" type="submit" value="🔍">
+				</div>
+			</form>	
+			<a class="waves-effect btn" style="background-color: #04FF3F; margin: -60px 0 0 40px;" th:href="@{/listaPessoas}">Listar Todos</a>
 		</div>
-	</form>
+	</fieldset>
 	
 	
 	
@@ -152,8 +174,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	    <tr style="color: #fff; font-family: roboto">
 	      <td>Id</td>
    	      <td>Nome</td>
-   	      <td>Sobrenome</td>
-   	      <td>Idade</td>
+   	      <td>E-Mail</td>
+   	      <td>Cep</td>
    	      <td>Editar</td>
    	      <td>Deletar</td>
    	      <td>Add Telefone</td>
@@ -163,8 +185,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	    <tr th:each = "pessoa : ${pessoas}" style="border-bottom: 2px solid black; color: #3FEEEE;">
 		  <td th:text = "${pessoa.id}"></td>
 		  <td th:text = "${pessoa.nome}"></td>
-		  <td th:text = "${pessoa.sobrenome}"></td>
-		  <td th:text = "${pessoa.idade}"></td>
+		  <td th:text = "${pessoa.email}"></td>
+		  <td th:text = "${pessoa.cep}"></td>
 		  <td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #EAFF00">Editar</a></td>
 		  <td><a th:href="@{/deletarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: red">Deletar</a></td>
 		  <td><a th:href = "@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}">Add Telefone</a></td>
@@ -173,8 +195,9 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	</table>
 	
 	
-	<!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<!-- link materialize se a tela for menor que 600 desativa -->
+	<script>window.onload=function(){x = window.screen.width;if(x < 620){document.getElementById("materializescript").href="";}}</script>
+    <script id="materializescript" class="scriptmaterialize" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 <script>
 
