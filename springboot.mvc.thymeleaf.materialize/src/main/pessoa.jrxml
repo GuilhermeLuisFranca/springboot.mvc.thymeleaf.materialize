@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pessoa" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ddcecdb-b840-450c-bc3a-c442554932e8">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Colecao de objetos projeto br.com.guilherme.springboot.mvc.thymeleaf.materialize"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
+	</field>
+	<field name="rua" class="java.lang.String">
+		<fieldDescription><![CDATA[rua]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<fieldDescription><![CDATA[cidade]]></fieldDescription>
+	</field>
+	<field name="bairro" class="java.lang.String">
+		<fieldDescription><![CDATA[bairro]]></fieldDescription>
+	</field>
+	<field name="ibge" class="java.lang.String">
+		<fieldDescription><![CDATA[ibge]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="telefones" class="java.util.List">
+		<fieldDescription><![CDATA[telefones]]></fieldDescription>
+	</field>
+	<field name="cep" class="java.lang.String">
+		<fieldDescription><![CDATA[cep]]></fieldDescription>
+	</field>
+	<field name="idade" class="java.lang.Integer">
+		<fieldDescription><![CDATA[idade]]></fieldDescription>
+	</field>
+	<field name="uf" class="java.lang.String">
+		<fieldDescription><![CDATA[uf]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[sexo]]></fieldDescription>
+	</field>
+	<field name="sobrenome" class="java.lang.String">
+		<fieldDescription><![CDATA[sobrenome]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="0" width="400" height="80" uuid="0665df9d-8040-4948-acd9-3ebb52c0a3d2"/>
+				<textElement textAlignment="Center">
+					<font size="40"/>
+				</textElement>
+				<text><![CDATA[Relátorio de Pessoas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="-20" y="30" width="20" height="30" uuid="ce7224a3-6f16-4c05-b96c-544b8518f448"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-20" y="0" width="20" height="30" uuid="5a97c320-0687-4eee-b1cd-304704f82452"/>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="30" width="100" height="30" uuid="d47fdbbb-3c12-458c-be84-9ef47a473253"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="94ae60b9-14e9-48d1-8c59-1ec3a85755f2"/>
+				<text><![CDATA[email]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="30" width="90" height="30" uuid="9002d99a-b129-4506-a8d3-be5d64457e17"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="0" width="90" height="30" uuid="1a822320-71b7-4c5e-8510-e644277315e4"/>
+				<text><![CDATA[nome]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="30" width="90" height="30" uuid="1a69b178-ab19-44af-b305-188e963f6c23"/>
+				<textFieldExpression><![CDATA[$F{sobrenome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="0" width="90" height="30" uuid="cf1b410a-f55e-4b3e-b4a2-88ffbf215905"/>
+				<text><![CDATA[sobrenome]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="30" width="90" height="30" uuid="8d28495f-6dd9-4e6a-99b8-700949e0fcbf"/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="0" width="90" height="30" uuid="24902637-aa47-4369-933d-c06c4420e2f0"/>
+				<text><![CDATA[sexo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="30" width="100" height="30" uuid="44758ef0-eed7-47a7-8795-43a1dea28a16"/>
+				<textFieldExpression><![CDATA[$F{cep}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="370" y="0" width="100" height="30" uuid="47e32381-70f6-4436-996c-e80e7ae48822"/>
+				<text><![CDATA[cep]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="30" width="100" height="30" uuid="4ee71df7-84d8-4b72-9895-82e667d4728e"/>
+				<textFieldExpression><![CDATA[$F{telefones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="470" y="0" width="100" height="30" uuid="cbfb87a0-4886-4d7c-a5c6-0d64b32bd919"/>
+				<text><![CDATA[telefones]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
