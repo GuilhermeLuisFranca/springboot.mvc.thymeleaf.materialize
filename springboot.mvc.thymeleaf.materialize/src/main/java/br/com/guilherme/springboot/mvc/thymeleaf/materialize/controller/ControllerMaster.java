@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import br.com.guilherme.springboot.mvc.thymeleaf.materialize.model.Pessoa;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.model.Telefone;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.repository.PessoaRepository;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.repository.TelefoneRepository;
+import br.com.guilherme.springboot.mvc.thymeleaf.materialize.service.ReportUtil;
 
 @Controller
 public class ControllerMaster {
@@ -31,6 +34,8 @@ public class ControllerMaster {
 	@Autowired
 	private TelefoneRepository telefoneRepository;
 	
+	@Autowired
+	private ReportUtil reportUtil;
 	
 	
 	@GetMapping("/carregarIndex")
@@ -251,6 +256,39 @@ public class ControllerMaster {
 
 		
 		return modelAndView;
+		
+	}
+	
+	@GetMapping("**/imprimirRelatorio")
+	/**
+	 * pega pelo nome ou todos e faz um download em pdf
+	 */
+	public void imprimePdf(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+			
+		Iterable<Pessoa> iterator = pessoaRepository.listarAll();
+		
+		for (Pessoa pessoa : iterator) {
+			pessoas.add(pessoa);
+		}
+		
+		//chamar o serviço que faz a geraçao do relatorio
+		byte[] pdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
+		
+		//tamanho da resposta para o navegador
+		response.setContentLength(pdf.length);
+		
+		//definir na resposta o tipo de arquivo
+		response.setContentType("application/octet-stream");
+		
+		//difinir o cabecalho da resposta
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", "relatorio.pdf");
+		response.setHeader(headerKey, headerValue);
+		
+		//finaliza a resposta pro navegador
+		response.getOutputStream().write(pdf);
 		
 	}
 	
