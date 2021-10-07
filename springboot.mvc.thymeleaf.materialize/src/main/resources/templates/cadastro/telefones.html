@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Telefones</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<style type="text/css">
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    background-attachment: fixed;
+    background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/*estilizando a scrollbar*/
+body::-webkit-scrollbar-track{background: rgb(86, 84, 84)}
+body::-webkit-scrollbar{width: 6px;background: #ef0f0f}
+body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
+
+/*cor do placeholder no input*/
+::-webkit-input-placeholder{color: #3B4444;}
+
+/*difinindo cor da escrita em si nos input*/
+.row> input{color: #3FEEEE !important;}
+</style>
+</head>
+<!-- se o usuario for usuario basico dara um aviso que ele nao tem acesso a pagina -->
+<body sec:authorize="hasRole('ROLE_USER')"><h1 style="color: white;">Apenas admins tem acesso</h1></body>
+<body sec:authorize="hasRole('ROLE_ADMIN')"><!-- CARREGA O BODY APENAS PRO ADMIN -->
+
+	<!-- logout aqui -->
+	<a style="
+		float: right;
+		color: orange;
+		font-size: 40px;
+		" href="/logout">Deslogar</a>
+
+	<h1 style="color: #fff; font-family: roboto">Telefones Pessoa</h1>
+	
+	<a style="text-decoration: underline; font-size: 45px" th:href="@{/CadastroPessoa}">Cadastro Pessoa</a>
+	
+	
+	 <div th:each="p : ${telefoneobj}">
+	     <div class="row" style="font-size: 30px; color: #fff; font-family: roboto;">
+	       <p class="col s3">ID: <span th:text="${p.id}">;</span></p>
+	       <p class="col s3">Nome: <span th:text="${p.nome}">;</span></p>
+	       <p class="col s3">Sobrenome: <span th:text="${p.sobrenome}">;</span></p>
+	       <p class="col s3">Idade: <span th:text="${p.idade}">;</span></p>
+	     </div>
+	 </div>
+	
+	
+	
+	<h5 style="color: #fff; font-family: roboto">Telefones</h5>
+	<div class="row">
+		<!-- 
+		 - aqui em caso de erro mostra mensagem
+		 -->
+		<br>
+			<div th:each = "m : ${msg}">
+				<span style="font-size: 60px; color: red" th:text = "${m}"></span>
+			</div>
+		<br>
+	
+		<!-- 
+		 - seguinda para o formulario de cadastro
+		 -->
+		<!-- 
+		 - invoca metodo addFonePessoa, passa a url na variavel path que chegara 
+		 - preenchida com o id que ja esta sendo usado ao entrar na pagina
+		 -->
+		<form th:action="@{/addFonePessoa/{pessoaid}(pessoaid=${telefoneobj.id})}" method="post" class="col s12">
+			<div class="row">
+				<input required="required" class="col s6" id="numero" name="numero" placeholder="Numero: (99) 99999-9999 ou (99) 9999-9999">
+				<input required="required" class="col s6" id="tipo" name="tipo" placeholder="Tipo">
+				<input type="submit" class="waves-effect waves-light btn" value="Enviar">
+			</div>
+		</form>
+	</div>
+
+	<table>
+	  <thead style="font-size: 25px; font-family: 'Roboto';">
+	    <tr style="color: #fff; font-family: roboto">
+	      <td>Id</td>
+   	      <td>Numero</td>
+   	      <td>Tipo</td>
+   	      <td>Deletar</td>
+   	    </tr>
+	  </thead>
+	  <tbody style="font-family: 'Noto Sans JP', sans-serif;">
+	    <tr th:each = "fone : ${telefones}" style="border-bottom: 2px solid black; color: #3FEEEE;">
+		  <td th:text = "${fone.id}"></td>
+		  <td th:text = "${fone.numero}"></td>
+		  <td th:text = "${fone.tipo}"></td>
+		  <td><a th:href="@{/deletartelefone/{telefoneid}(telefoneid=${fone.id})}" style="color: red">Deletar</a></td>
+	    </tr>
+	  </tbody>
+	</table>
+	
+	
+	
+	
+	<!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>

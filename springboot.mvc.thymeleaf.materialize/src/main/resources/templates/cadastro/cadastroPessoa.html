@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<style type="text/css">
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    background-attachment: fixed;
+    background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/*estilizando a scrollbar*/
+body::-webkit-scrollbar-track{background: rgb(86, 84, 84)}
+body::-webkit-scrollbar{width: 6px;background: #ef0f0f}
+body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
+
+#divBusca{
+  background-color:#2F4F4F;
+  border:solid 1px;
+  border-radius:15px;
+  width:300px;
+  margin-top: 2%;
+}
+
+#nomepesquisa{
+  float:left;
+  background-color:transparent;
+  padding-left:5px;
+  font-style:italic;
+  font-size:18px;
+  border:none;
+  height:32px;
+  width:260px;
+}
+
+.btnBusca{
+	background-color:#2F4F4F;
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	border-color: #2F4F4F;
+}
+
+/*difinindo cor da escrita em si nos input*/
+.col> input{
+	color: #3FEEEE !important;
+}
+</style>
+</head>
+<!-- se o usuario for usuario basico dara um aviso que ele nao tem acesso a pagina -->
+<body sec:authorize="hasRole('ROLE_USER')"><h1 style="color: white;">Apenas admins tem acesso</h1></body>
+<body sec:authorize="hasRole('ROLE_ADMIN')"><!-- CARREGA O BODY APENAS PRO ADMIN -->
+
+	<!-- logout aqui -->
+	<a style="
+		float: right;
+		color: orange;
+		font-size: 40px;
+		" href="/logout">Deslogar</a>
+
+	<h1 style="color: #fff;">Cadastro Pessoa</h1>
+	
+	<div class="row">
+	
+		<!-- 
+		 - aqui em caso de erro mostra mensagem
+		 -->
+		<br>
+			<div th:each = "m : ${msg}">
+				<span style="font-size: 60px; color: red" th:text = "${m}"></span>
+			</div>
+		<br>
+	
+		<!-- 
+		 - seguinda para o formulario de cadastro
+		 -->
+		<form action="salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}">
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s6">
+					<input readonly="readonly" type="text" id="id" name="id" placeholder="Id: apenas para edicao" th:field="*{id}">
+				</div>
+				<div class="input-fiel col s6">
+					<input required="required" type="text" id="idade" name="idade" placeholder="Idade" th:field="*{idade}">
+				</div>
+			</div>
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s6">
+					<input required="required" type="text" id="nome" name="nome" placeholder="Nome" th:field="*{nome}">
+				</div>
+				<div class="input-fiel col s6">		
+					<input required="required" type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome" th:field="*{sobrenome}">
+				</div>
+			</div>
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s6">
+					<input required="required" type="text" id="cep" name="cep" placeholder="Cep" size="10" maxlength="9" th:field="*{cep}">
+				</div>
+				<div class="input-fiel col s6">		
+					<input required="required" type="text" id="rua" name="rua" placeholder="Rua" size="5" th:field="*{rua}">
+				</div>
+			</div>
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s6">
+					<input required="required" type="text" id="bairro" name="bairro" placeholder="Bairro" size="40" th:field="*{bairro}">
+				</div>
+				<div class="input-fiel col s6">		
+					<input required="required" type="text" id="cidade" name="cidade" placeholder="Cidade" size="40" th:field="*{cidade}">
+				</div>
+			</div>
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s6">
+					<input required="required" type="text" id="uf" name="uf" placeholder="Estado" size="2" th:field="*{uf}">
+				</div>
+				<div class="input-fiel col s6">		
+					<input required="required" type="text" id="ibge" name="ibge" placeholder="IBGE" size="8" th:field="*{ibge}">
+				</div>
+			</div>
+			<input type="submit" class="waves-effect waves-light btn" value="Enviar">
+			<button type="button" class="waves-effect waves-light btn" style="background-color: yellow;" onclick="document.getElementById('FormSalvarPessoa').reset();">NOVO</button>
+			<a class="waves-effect waves-light btn" style="background-color: #04FF3F" th:href="@{/listaPessoas}">Listar</a>
+		</form>
+	</div>
+	
+	
+	
+	<form action="pesquisarpessoa" method="post">
+		<div id="divBusca">
+			<input type="text" id="nomepesquisa" name="nomepesquisa" placeholder="Pesquisar" style="color: #1200FF !important;">
+	
+			<input class="btnBusca" type="submit" value="🔍">
+		</div>
+	</form>
+	
+	
+	
+	<br><br>
+	<table>
+	  <thead style="font-size: 25px; font-family: 'Roboto';">
+	    <tr style="color: #fff; font-family: roboto">
+	      <td>Id</td>
+   	      <td>Nome</td>
+   	      <td>Sobrenome</td>
+   	      <td>Idade</td>
+   	      <td>Editar</td>
+   	      <td>Deletar</td>
+   	      <td>Add Telefone</td>
+   	    </tr>
+	  </thead>
+	  <tbody style="font-family: 'Noto Sans JP', sans-serif;">
+	    <tr th:each = "pessoa : ${pessoas}" style="border-bottom: 2px solid black; color: #3FEEEE;">
+		  <td th:text = "${pessoa.id}"></td>
+		  <td th:text = "${pessoa.nome}"></td>
+		  <td th:text = "${pessoa.sobrenome}"></td>
+		  <td th:text = "${pessoa.idade}"></td>
+		  <td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #EAFF00">Editar</a></td>
+		  <td><a th:href="@{/deletarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: red">Deletar</a></td>
+		  <td><a th:href = "@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}">Add Telefone</a></td>
+	    </tr>
+	  </tbody>
+	</table>
+	
+	
+	<!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+<script>
+
+$(document).ready(function() {
+
+    function limpa_formulário_cep() {
+        // Limpa valores do formulário de cep.
+        $("#rua").val("");
+        $("#bairro").val("");
+        $("#cidade").val("");
+        $("#uf").val("");
+        $("#ibge").val("");
+    }
+    
+    //Quando o campo cep perde o foco.
+    $("#cep").blur(function() {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = $(this).val().replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if(validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                $("#rua").val("...");
+                $("#bairro").val("...");
+                $("#cidade").val("...");
+                $("#uf").val("...");
+                $("#ibge").val("...");
+
+                //Consulta o webservice viacep.com.br/
+                $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                    if (!("erro" in dados)) {
+                        //Atualiza os campos com os valores da consulta.
+                        $("#rua").val(dados.logradouro);
+                        $("#bairro").val(dados.bairro);
+                        $("#cidade").val(dados.localidade);
+                        $("#uf").val(dados.uf);
+                        $("#ibge").val(dados.ibge);
+                    } //end if.
+                    else {
+                        //CEP pesquisado não foi encontrado.
+                        limpa_formulário_cep();
+                        alert("CEP não encontrado.");
+                    }
+                });
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    });
+});
+
+</script>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    background-attachment: fixed;
+    background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+/*estilizando a scrollbar*/
+body::-webkit-scrollbar-track{background: rgb(86, 84, 84)}
+body::-webkit-scrollbar{width: 6px;background: #ef0f0f}
+body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
+
+.form{
+    background-color: white;
+    max-width: 500px;
+    width: 70%;
+    padding: 20px;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    top: 20%;
+    transform: translate(-50%, 50%);
+    border-radius: 15px;
+}
+
+.form h3{
+    text-align: center;
+    color: blue;
+}
+
+.form> .input1, .input2{
+    width: 100%;
+    height: 45px;
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    margin: 10px 0;
+}
+
+.form> .input3{
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    background-color: blue;
+    color: white;
+    border: 0;
+    border-radius: 20px;
+}
+
+.form> .input3:hover{
+        background-color: #00293d;
+}
+
+.form> .input2:focus{
+    outline: 0;
+    background-color: rgb(209, 209, 209);
+}
+
+.form> .input1:focus{
+    outline: 0;
+    background-color: rgb(209, 209, 209);
+}
+</style>
+</head>
+<body>
+
+	<h1>Acesso ao Sistema</h1>
+
+	<form th:action="@{/login}" method="post" class="form">
+        <h3>Login</h3>
+
+        <input required="required" type="text" name="username" placeholder="Usuario" class="input1">
+
+        <input required="required" type="password" name="password" placeholder="Senha" class="input2">
+
+        <input name="Logar" type="submit" value="Enviar" class="input3">
+    </form>
+	
+	
+	
+	
+</body>
+</html>
