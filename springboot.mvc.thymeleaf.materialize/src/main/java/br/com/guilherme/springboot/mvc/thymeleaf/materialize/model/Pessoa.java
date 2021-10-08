@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import br.com.guilherme.springboot.mvc.thymeleaf.materialize.enums.Cargo;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -40,11 +44,13 @@ public class Pessoa implements Serializable {
 	@NotEmpty(message = "Sexo não pode estar vazio")
 	private String sexo;
 	
-	
 	@Min(value = 18, message = "Menor de Idade nao pode")
 	@Max(value = 100, message = "Mais de 100 anos han? insere uma idade correta ai!")
 	@NotNull(message = "Idade não pode ser nulo")
 	private int idade;
+	
+	@Enumerated(EnumType.STRING)
+	private Cargo cargo;
 	
 	@ManyToOne/*muitas pessoa podem ter esta profission*/
 	private Profissao profissao;
@@ -141,6 +147,12 @@ public class Pessoa implements Serializable {
 	}
 	public void setProfissao(Profissao profissao) {
 		this.profissao = profissao;
+	}
+	public Cargo getCargo() {
+		return cargo;
+	}
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
 	}
 	
 	
