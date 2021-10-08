@@ -205,7 +205,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
    	    </tr>
 	  </thead>
 	  <tbody style="font-family: 'Noto Sans JP', sans-serif;">
-	    <tr th:each = "pessoa : ${pessoas}" style="border-bottom: 2px solid black; color: #3FEEEE;">
+	    <tr th:each = "pessoa : ${pessoas.content}" style="border-bottom: 3px solid black; color: #3FEEEE;">
 		  <td th:text = "${pessoa.id}"></td>
 		  <td th:text = "${pessoa.nome}"></td>
 		  <td th:text = "${pessoa.email}"></td>
@@ -214,12 +214,28 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		  <td><a th:href="@{/deletarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: red">Deletar</a></td>
 		  <td>
 		  	<a th:if="${pessoa.arquivo != null}" th:href="@{/baixarArquivo/{idpessoa}(idpessoa=${pessoa.id})}" style="color: orange;">Download</a>
-		  	<a th:if="${pessoa.arquivo == null}">Sem Arquivo</a>
+		  	<a th:if="${pessoa.arquivo == null}">Sem Arquivo</a><!-- se nao tiver arquivo avisa -->
 		  </td>
 		  <td><a th:href = "@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}" style="color: blue;">Add Telefone</a></td>
 	    </tr>
 	  </tbody>
 	</table>
+	
+	<div class="row" style="margin: 30px auto; text-align: center;">
+		<span th:if="${pessoas.hasPrevious()}">
+			<a th:href="@{/pessoaspag(page=${pessoas.number-1}, size=${pessoas.size})}">Anterior</a>
+		</span>
+	
+		<th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
+			<a th:href="@{/pessoaspag(page=${i}, size=${pessoas.size})}">[[ ${i} + 1 ]]</a>
+		</th:block>
+		
+		<span th:if="${pessoas.hasNext()}">
+			<a th:href="@{/pessoaspag(page=${pessoas.number+1}, size=${pessoas.size})}">Próximo</a>
+		</span>
+	</div>
+	
+	<div style="width: 100%; border: 1px solid black"></div><!-- apenas pra ter algo abaixo da paginacao pra ser possival puxar margin-bottom -->
 	
 	
     <script id="materializescript" class="scriptmaterialize" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

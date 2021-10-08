@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -62,9 +67,28 @@ public class ControllerMaster {
 		
 		view.addObject("pessoaobj", new Pessoa());//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
 		
-		view.addObject("pessoas", pessoaRepository.listarAll());//passa para a tela todos os cadastros
+		view.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));//passa para a tela todos os cadastros
 		
 		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+		
+		return view;
+		
+	}
+	
+	
+	
+	@GetMapping("/pessoaspag")
+	public ModelAndView carregaPessoaPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView view) {
+		
+		Page<Pessoa> pagePessoa = pessoaRepository.findAll(pageable);
+		
+		view.addObject("pessoas", pagePessoa);
+		
+		view.addObject("pessoaobj", new Pessoa());
+		
+		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+		
+		view.setViewName("cadastro/cadastroPessoa");
 		
 		return view;
 		
@@ -84,7 +108,7 @@ public class ControllerMaster {
 			
 			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
 			
-			Iterable<Pessoa> pessoasIterable = pessoaRepository.listarAll();
+			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
 			
 			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
 			view.addObject("pessoaobj", pessoa);
@@ -137,11 +161,13 @@ public class ControllerMaster {
 		
 		ModelAndView view = new ModelAndView("cadastro/cadastroPessoa");
 		
-		Iterable<Pessoa> pessoaIterable = pessoaRepository.listarAll();
+		Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
 		
 		view.addObject("pessoaobj", new Pessoa());//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
 		
 		view.addObject("pessoas", pessoaIterable);//passa para a tela todos os cadastros
+		
+		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 		
 		return view;
 		
