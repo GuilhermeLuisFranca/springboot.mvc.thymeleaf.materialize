@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.model.Pessoa;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.model.Telefone;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.repository.PessoaRepository;
+import br.com.guilherme.springboot.mvc.thymeleaf.materialize.repository.ProfissaoRepository;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.repository.TelefoneRepository;
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.service.ReportUtil;
 
@@ -37,6 +38,8 @@ public class ControllerMaster {
 	@Autowired
 	private ReportUtil reportUtil;
 	
+	@Autowired
+	private ProfissaoRepository profissaoRepository;
 	
 	@GetMapping("/carregarIndex")
 	/**
@@ -59,6 +62,8 @@ public class ControllerMaster {
 		view.addObject("pessoaobj", new Pessoa());//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
 		
 		view.addObject("pessoas", pessoaRepository.listarAll());//passa para a tela todos os cadastros
+		
+		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 		
 		return view;
 		
@@ -135,6 +140,8 @@ public class ControllerMaster {
 		
 		view.addObject("pessoaobj", pessoa.get());//passa para a tela os dados do id pra carrega no form
 		
+		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+		
 		return view;
 		
 	}
@@ -168,6 +175,8 @@ public class ControllerMaster {
 		view.addObject("pessoas", pessoaRepository.listarAllByName(nomepesquisa.trim().toUpperCase()));//pesquisa
 		
 		view.addObject("pessoaobj", new Pessoa());//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
+		
+		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 		
 		return view;
 		
@@ -291,5 +300,10 @@ public class ControllerMaster {
 		response.getOutputStream().write(pdf);
 		
 	}
+	
+	
+	
+	
+	
 	
 }

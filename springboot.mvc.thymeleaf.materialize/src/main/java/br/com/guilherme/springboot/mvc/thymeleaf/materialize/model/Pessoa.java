@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -46,6 +46,8 @@ public class Pessoa implements Serializable {
 	@NotNull(message = "Idade não pode ser nulo")
 	private int idade;
 	
+	@ManyToOne/*muitas pessoa podem ter esta profission*/
+	private Profissao profissao;
 
 	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)/*1 pra muitos, orphan e cascade para consultar tudo pra ser possivel fazer alteracoes
 	que nao sejam bloquedas gracas ao relacionamento de tabela*/
@@ -133,6 +135,12 @@ public class Pessoa implements Serializable {
 	}
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
+	}
+	public Profissao getProfissao() {
+		return profissao;
+	}
+	public void setProfissao(Profissao profissao) {
+		this.profissao = profissao;
 	}
 	
 	
