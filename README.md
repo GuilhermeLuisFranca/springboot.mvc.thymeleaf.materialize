@@ -33,6 +33,14 @@ INSERT INTO role(id, nome_role) VALUES (2, 'ROLE_USER');
 INSERT INTO usuario(id, login, senha) VALUES (1, 'admin', '$2a$10$XQ44XYOBateY8V.sHCgmhOqh8u6PxaUjKgRfIj2Xu1x9.yqHV9cty');
 INSERT INTO usuario(id, login, senha) VALUES (2, 'user', '$2a$10$7/RXuG4fbbW1wffaYPnHLeKVtlTrY1gDUlhw2T8AMMyw5Ru4aT2GK');
 
+--inserindo algumas profissoes para serem selcionadas
+INSERT INTO profissao(id, nome) VALUES (1, 'Programador Java');
+INSERT INTO profissao(id, nome) VALUES (2, 'Programador PHP');
+INSERT INTO profissao(id, nome) VALUES (3, 'Programador JavaScript');
+INSERT INTO profissao(id, nome) VALUES (4, 'Programador Front-End');
+INSERT INTO profissao(id, nome) VALUES (5, 'Programador C / C++');
+
+
 -- inserindo um usuario criado com admin e outro como user basico
 INSERT INTO usuarios_role(usuario_id, role_id) VALUES (1, 1);
 INSERT INTO usuarios_role(usuario_id, role_id) VALUES (2, 2);
