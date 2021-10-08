@@ -16,7 +16,8 @@
 html, body{
     height: 100%;
     background-attachment: fixed;
-    background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg");
+    /*background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg");*/
+    background-color: #0D1117;
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
@@ -88,7 +89,13 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		<!-- 
 		 - seguinda para o formulario de cadastro
 		 -->
-		<form action="salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}">
+		<form action="salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}" enctype="multipart/form-data">
+			<div class="row" style="color: #fff;">
+				<div class="input-fiel col s12">
+					<label style="font-size: 20px; color: white;" for="file" class="active">Arquivo</label>
+					<input type="file" id="file" name="file" class="validate">
+				</div>
+			</div>
 			<div class="row" style="color: #fff;">
 				<div class="input-fiel col s4">
 					<input readonly="readonly" type="text" id="id" name="id" placeholder="Id: apenas para edicao" th:field="*{id}">
@@ -97,7 +104,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 					<input required="required" type="date" id="dataNascimento" name="dataNascimento" th:field="*{dataNascimento}">
 				</div>
 				<div class="input-fiel col s4">
-					<input required="required" type="number" id="idade" name="idade" placeholder="Idade" th:field="*{idade}">
+					<input readonly="readonly" required="required" type="number" id="idade" name="idade" placeholder="Idade" th:field="*{idade}">
 				</div>
 			</div>
 			<div class="row" style="color: #fff;">
@@ -193,6 +200,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
    	      <td>Cep</td>
    	      <td>Editar</td>
    	      <td>Deletar</td>
+   	      <td>Arquivo</td>
    	      <td>Add Telefone</td>
    	    </tr>
 	  </thead>
@@ -204,7 +212,11 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		  <td th:text = "${pessoa.cep}"></td>
 		  <td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #EAFF00">Editar</a></td>
 		  <td><a th:href="@{/deletarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: red">Deletar</a></td>
-		  <td><a th:href = "@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}">Add Telefone</a></td>
+		  <td>
+		  	<a th:if="${pessoa.arquivo != null}" th:href="@{/baixarArquivo/{idpessoa}(idpessoa=${pessoa.id})}" style="color: orange;">Download</a>
+		  	<a th:if="${pessoa.arquivo == null}">Sem Arquivo</a>
+		  </td>
+		  <td><a th:href = "@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}" style="color: blue;">Add Telefone</a></td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -213,6 +225,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
     <script id="materializescript" class="scriptmaterialize" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 <script>
+//faz o calendario aparecer e formatar a data corretamente e enviar pro back-end
 $(document).ready(function() {
 
 	$('#dataNascimento').datapicker({
@@ -222,6 +235,10 @@ $(document).ready(function() {
 	
 });
 
+
+
+
+//web service cep
 $(document).ready(function() {
 	
     function limpa_formulário_cep() {
@@ -286,12 +303,15 @@ $(document).ready(function() {
     });
 });
 
+
+
+
+//pegao da data dada no calendario calcula e da um idade automaticamente
 document.getElementById("dataNascimento").addEventListener('change', function() {
   var data = new Date(this.value);
   if(isDate_(this.value) && data.getFullYear() > 1900)
       document.getElementById("idade").value = calculateAge(this.value);
 });
-
 function calculateAge(dobString) {
   var dob = new Date(dobString);
   var currentDate = new Date();
@@ -303,7 +323,6 @@ function calculateAge(dobString) {
   }
   return age;
 }
-
 function calcular(data) {
   var data = document.form.nascimento.value;
   alert(data);
@@ -311,7 +330,6 @@ function calcular(data) {
   var junta = partes[2]+"-"+partes[1]+"-"+partes[0];
   document.form.idade.value = (calculateAge(junta));
 }
-
 var isDate_ = function(input) {
         var status = false;
         if (!input || input.length <= 0) {

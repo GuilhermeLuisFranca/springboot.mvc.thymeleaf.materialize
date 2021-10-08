@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -70,13 +71,13 @@ public class Pessoa implements Serializable {
 	
 	private String cep, rua, bairro, cidade, uf, ibge;//cep, toda a validacao do cep pra carregar um correto ja esta sendo feito no front usando web service
 	
+	@Lob
+	private byte[] arquivo;
+	
+	private String nomeFileArquivo, tipoFileArquivo;
+
+	
 	//getters and setters
-	public List<Telefone> getTelefones() {
-		return telefones;
-	}
-	public void setTelefones(List<Telefone> telefones) {
-		this.telefones = telefones;
-	}
 	public Long getId() {
 		return id;
 	}
@@ -95,11 +96,47 @@ public class Pessoa implements Serializable {
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
 	public int getIdade() {
 		return idade;
 	}
 	public void setIdade(int idade) {
 		this.idade = idade;
+	}
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+	public Cargo getCargo() {
+		return cargo;
+	}
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+	public Profissao getProfissao() {
+		return profissao;
+	}
+	public void setProfissao(Profissao profissao) {
+		this.profissao = profissao;
+	}
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
 	}
 	public String getCep() {
 		return cep;
@@ -137,36 +174,26 @@ public class Pessoa implements Serializable {
 	public void setIbge(String ibge) {
 		this.ibge = ibge;
 	}
-	public String getEmail() {
-		return email;
+	public byte[] getArquivo() {
+		return arquivo;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setArquivo(byte[] arquivo) {
+		this.arquivo = arquivo;
 	}
-	public String getSexo() {
-		return sexo;
+	public String getNomeFileArquivo() {
+		return nomeFileArquivo;
 	}
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
+	public void setNomeFileArquivo(String nomeFileArquivo) {
+		this.nomeFileArquivo = nomeFileArquivo;
 	}
-	public Profissao getProfissao() {
-		return profissao;
+	public String getTipoFileArquivo() {
+		return tipoFileArquivo;
 	}
-	public void setProfissao(Profissao profissao) {
-		this.profissao = profissao;
+	public void setTipoFileArquivo(String tipoFileArquivo) {
+		this.tipoFileArquivo = tipoFileArquivo;
 	}
-	public Cargo getCargo() {
-		return cargo;
-	}
-	public void setCargo(Cargo cargo) {
-		this.cargo = cargo;
-	}
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
+	
+	
 	
 	
 }

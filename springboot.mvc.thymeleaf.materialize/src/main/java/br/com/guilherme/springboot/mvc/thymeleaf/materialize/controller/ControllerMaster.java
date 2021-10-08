@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.model.Pessoa;
@@ -71,11 +72,11 @@ public class ControllerMaster {
 	
 	
 	
-	@PostMapping("**/salvarPessoa")
+	@PostMapping(value =  "**/salvarPessoa", consumes = {"multipart/form-data"})
 	/**
 	 * se houver algum erro lanca a mensagem, se tudo der certo salva o cadastro e lista todos os usuarios
 	 */
-	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult) throws IOException {
+	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult, final MultipartFile file) throws IOException {	
 		
 		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));//antes de salvar vai carregar o objeto tel pro pessoa pra nao dar erro de cascade
 		
@@ -98,6 +99,25 @@ public class ControllerMaster {
 			return view;
 
 		} //senao houver erro segue o fluxo
+		
+		if(file.getSize() > 0) {//se tiver arquivo pra upload
+			
+			pessoa.setArquivo(file.getBytes());
+			
+			pessoa.setTipoFileArquivo(file.getContentType());
+			pessoa.setNomeFileArquivo(file.getOriginalFilename());
+			
+		} else {
+			if(pessoa.getId() != null && pessoa.getId() > 0) {//editando
+				
+				Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
+				
+				pessoa.setArquivo(pessoaTempo.getArquivo());
+				pessoa.setTipoFileArquivo(pessoaTempo.getTipoFileArquivo());
+				pessoa.setNomeFileArquivo(pessoaTempo.getNomeFileArquivo());
+				
+			}
+		}
 		
 		ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
 		
@@ -302,6 +322,34 @@ public class ControllerMaster {
 		
 	}
 	
+	@GetMapping("/baixarArquivo/{idpessoa}")
+	/**
+	 * pega o id e baixa o curriculo deste id
+	 * @throws IOException 
+	 */
+	public void baixarArquivo(@PathVariable("idpessoa") Long idpessoa, HttpServletResponse response) throws IOException {
+		
+		//consultar o objeto pessoa no banco de dados
+		Pessoa pessoa = pessoaRepository.findById(idpessoa).get();
+		if(pessoa.getArquivo() != null) {//se exitir arquivo pra fazer download
+			
+			//setar tamanho da resposta
+			response.setContentLength(pessoa.getArquivo().length);
+			
+			//tipo do arquivo para download ou pode ser generica application/octet-stream
+			response.setContentType(pessoa.getTipoFileArquivo());
+			
+			//define o cabecalho da resposta
+			String headerKey = "Content-Disposition";
+			String headerValue = String.format("attachment; filename=\"%s\"", pessoa.getNomeFileArquivo());
+			response.setHeader(headerKey, headerValue);
+			
+			//finaliza a resposta passando o arquivo
+			response.getOutputStream().write(pessoa.getArquivo());
+			
+		}
+		
+	}
 	
 	
 	
