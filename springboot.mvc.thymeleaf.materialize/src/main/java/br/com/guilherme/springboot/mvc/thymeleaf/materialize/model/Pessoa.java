@@ -1,6 +1,7 @@
 package br.com.guilherme.springboot.mvc.thymeleaf.materialize.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,10 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.guilherme.springboot.mvc.thymeleaf.materialize.enums.Cargo;
 
@@ -49,6 +54,10 @@ public class Pessoa implements Serializable {
 	@NotNull(message = "Idade não pode ser nulo")
 	private int idade;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	private Date dataNascimento;
+	
 	@Enumerated(EnumType.STRING)
 	private Cargo cargo;
 	
@@ -60,8 +69,6 @@ public class Pessoa implements Serializable {
 	private List<Telefone> telefones;
 	
 	private String cep, rua, bairro, cidade, uf, ibge;//cep, toda a validacao do cep pra carregar um correto ja esta sendo feito no front usando web service
-	
-	
 	
 	//getters and setters
 	public List<Telefone> getTelefones() {
@@ -153,6 +160,12 @@ public class Pessoa implements Serializable {
 	}
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
+	}
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 	
 	

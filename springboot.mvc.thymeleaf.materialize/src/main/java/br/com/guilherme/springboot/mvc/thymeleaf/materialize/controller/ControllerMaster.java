@@ -87,6 +87,7 @@ public class ControllerMaster {
 			
 			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
 			view.addObject("pessoaobj", pessoa);
+			view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 
 			List<String> msg = new ArrayList<String>();
 			for(ObjectError objectError : bindingResult.getAllErrors()) {

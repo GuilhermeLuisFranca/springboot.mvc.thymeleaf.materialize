@@ -5,8 +5,6 @@
 <title>Cadastro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- link materialize, se a tela for menor que 620 desativa ele -->
-<script>window.onload=function(){x = window.screen.width;if(x < 620){document.getElementById("materialize").href="";}}</script>
 <link id="materialize" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <style type="text/css">
 *{
@@ -92,10 +90,13 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		 -->
 		<form action="salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}">
 			<div class="row" style="color: #fff;">
-				<div class="input-fiel col s6">
+				<div class="input-fiel col s4">
 					<input readonly="readonly" type="text" id="id" name="id" placeholder="Id: apenas para edicao" th:field="*{id}">
 				</div>
-				<div class="input-fiel col s6">
+				<div class="input-fiel col s4">
+					<input required="required" type="date" id="dataNascimento" name="dataNascimento" th:field="*{dataNascimento}">
+				</div>
+				<div class="input-fiel col s4">
 					<input required="required" type="number" id="idade" name="idade" placeholder="Idade" th:field="*{idade}">
 				</div>
 			</div>
@@ -209,14 +210,20 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	</table>
 	
 	
-	<!-- link materialize se a tela for menor que 600 desativa -->
-	<script>window.onload=function(){x = window.screen.width;if(x < 620){document.getElementById("materializescript").href="";}}</script>
     <script id="materializescript" class="scriptmaterialize" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 <script>
-
 $(document).ready(function() {
 
+	$('#dataNascimento').datapicker({
+		showOthermonths:true,
+		format: 'yyyy-MM-dd'
+	});
+	
+});
+
+$(document).ready(function() {
+	
     function limpa_formulário_cep() {
         // Limpa valores do formulário de cep.
         $("#rua").val("");
@@ -278,6 +285,48 @@ $(document).ready(function() {
         }
     });
 });
+
+document.getElementById("dataNascimento").addEventListener('change', function() {
+  var data = new Date(this.value);
+  if(isDate_(this.value) && data.getFullYear() > 1900)
+      document.getElementById("idade").value = calculateAge(this.value);
+});
+
+function calculateAge(dobString) {
+  var dob = new Date(dobString);
+  var currentDate = new Date();
+  var currentYear = currentDate.getFullYear();
+  var birthdayThisYear = new Date(currentYear, dob.getMonth(), dob.getDate());
+  var age = currentYear - dob.getFullYear();
+  if(birthdayThisYear > currentDate) {
+    age--;
+  }
+  return age;
+}
+
+function calcular(data) {
+  var data = document.form.nascimento.value;
+  alert(data);
+  var partes = data.split("/");
+  var junta = partes[2]+"-"+partes[1]+"-"+partes[0];
+  document.form.idade.value = (calculateAge(junta));
+}
+
+var isDate_ = function(input) {
+        var status = false;
+        if (!input || input.length <= 0) {
+          status = false;
+        } else {
+          var result = new Date(input);
+          if (result == 'Invalid Date') {
+            status = false;
+          } else {
+            status = true;
+          }
+        }
+        return status;
+}
+
 
 </script>
 </html>
