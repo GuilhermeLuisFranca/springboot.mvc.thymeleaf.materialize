@@ -1,0 +1,11 @@
+start http://localhost:8080/admin/cadastroPessoa
+start http://localhost:8080/admin/salvarPessoa
+start http://localhost:8080/admin/listaPessoas
+start http://localhost:8080/admin/pessoaspag?page=0&size=5&nomepesquisa=
+start http://localhost:8080/admin/pessoaspag?page=16&size=5&nomepesquisa=
+start http://localhost:8080/admin/pesquisarpessoa
+start http://localhost:8080/admin/baixarArquivo
+start http://localhost:8080/admin/imprimirRelatorio
+start http://localhost:8080/admin/editarpessoa/2001
+start http://localhost:8080/admin/deletartelefone/3
+start http://localhost:8080/admin/telefones/1
