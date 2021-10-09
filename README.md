@@ -15,7 +15,7 @@ CREATE DATABASE "spring-boot-thymeleaf"
        LC_CTYPE = 'Portuguese_Brazil.1252'
        CONNECTION LIMIT = -1;
 
-============ execute as querys a seguir apos a criacao do banco e o primeiro start do projeto apos criar as tabelas ============
+=== execute as querys a seguir apos a criacao do banco e o primeiro start do projeto apos criar as tabelas ===
 
 -- deleta o unique do usuariorole para poder depois cria-lo novamente e assim poder ter varios usuarios cadastrados em um role <br>
 ALTER TABLE usuarios_role DROP
