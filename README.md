@@ -40,7 +40,8 @@ INSERT INTO profissao(id, nome) VALUES (3, 'Programador JavaScript');
 INSERT INTO profissao(id, nome) VALUES (4, 'Programador Front-End');
 INSERT INTO profissao(id, nome) VALUES (5, 'Programador C / C++');
 
-
 -- inserindo um usuario criado com admin e outro como user basico
 INSERT INTO usuarios_role(usuario_id, role_id) VALUES (1, 1);
 INSERT INTO usuarios_role(usuario_id, role_id) VALUES (2, 2);
+
+-- no application pode-se encontrar um main metodo que se executa te retorna-ra varias querys de pessoa para dar insert de uma vez, e uma query para delete destas querys tambem
