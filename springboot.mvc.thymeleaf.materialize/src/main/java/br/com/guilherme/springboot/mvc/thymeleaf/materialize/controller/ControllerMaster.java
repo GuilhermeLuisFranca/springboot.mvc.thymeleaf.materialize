@@ -125,7 +125,8 @@ public class ControllerMaster {
 		
 		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));//antes de salvar vai carregar o objeto tel pro pessoa pra nao dar erro de cascade
 		
-		if(bindingResult.hasErrors()) {//se houver erro
+		//se houver erros vindo da validacao do modelo
+		if(bindingResult.hasErrors()) {
 			
 			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
 			
@@ -143,7 +144,27 @@ public class ControllerMaster {
 			view.addObject("msg", msg);
 			return view;
 
-		} //senao houver erro segue o fluxo
+		}
+		
+		
+		
+		//se ja existir alguma pessoa com o mesmo login
+		if(pessoaRepository.verificarEmail(pessoa.getEmail()) != null && !pessoaRepository.verificarEmail(pessoa.getEmail()).isEmpty()) {
+			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
+			
+			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
+			
+			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
+			view.addObject("pessoaobj", pessoa);
+			view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+			
+			view.addObject("msg", "Este E-Mail ja foi usado!");
+			
+			
+			return view;
+		}
+		
+		
 		
 		if(file.getSize() > 0) {//se tiver arquivo pra upload faz
 			
@@ -272,7 +293,7 @@ public class ControllerMaster {
 	
 	@GetMapping("**/admin/imprimirRelatorio")
 	/**
-	 * pega pelo nome ou todos e faz um download em pdf
+	 * @return um download de relatorio do tipo jasper com algumas informacoes de alguns usuarios
 	 */
 	public void imprimePdf(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -348,6 +369,14 @@ public class ControllerMaster {
 	 * resgata o id do usuario selecionado p adicionar telefone e redireciona
 	 * para a pagina pronto p adicionar excluir ou editar numero, e tbm ja lista
 	 * os numeros
+	 * 
+	 * @param telefone - carregando a classe telefone
+	 * 
+	 * @param idPessoa - resgata o id da pessoa passado
+	 * 
+	 * @return pra tela de telefones adicionando informacoes basicas da pessoa 
+	 * passada atraves do @param idPessoa em seguida faz uma listagem dos telefones
+	 * desta pessoa
 	 */
 	public ModelAndView telefones(Telefone telefone, @PathVariable("idpessoa") Long idPessoa) {
 		
@@ -367,7 +396,19 @@ public class ControllerMaster {
 	
 	@PostMapping("**/admin/addFonePessoa/{pessoaid}")
 	/**
-	 * grava a o telefone em um pra muito p algum usuario
+	 * 
+	 * @param telefone - carregando a classe ja puxando as validacoes la feitas
+	 * 
+	 * @param bindingResult - sera usada pra verificar se acontecer algum erro
+	 * vindo do @param telefone
+	 * 
+	 * @param pessoaid - resgata o id da pessoa passado
+	 * 
+	 * if houver erro de validacao @return pra tela avisando
+	 * else @return salva este novo telefone, lembrando que a tabela e em @OneToMany
+	 * entao pode-se salvar varios telefones pra apenas uma pessoa
+	 * 
+	 * @throws IOException
 	 */
 	public ModelAndView addFonePessoa(@Valid Telefone telefone, BindingResult bindingResult, @PathVariable("pessoaid") Long pessoaid) throws IOException {	
 	
@@ -391,7 +432,7 @@ public class ControllerMaster {
 			
 		}
 		
-		//pega o id do usuario da tabela pessoa e passa pra tabela telefone e salva
+		//pega o id da pessoa da tabela pessoa e passa pra tabela telefone e salva
 		Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
 		telefone.setPessoa(pessoa);
 		telefoneRepository.save(telefone);
@@ -409,7 +450,9 @@ public class ControllerMaster {
 	
 	@GetMapping("**/admin/deletartelefone/{telefoneid}")
 	/**
-	 * deleta um telefone
+	 * @param telefoneid - resgatamos o id do telefone da pessoa
+	 * 
+	 * @return pra tela e deleta
 	 */
 	public ModelAndView deletarTelefone(@PathVariable("telefoneid") Long telefoneid) {
 		

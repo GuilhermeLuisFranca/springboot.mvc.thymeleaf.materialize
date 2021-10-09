@@ -25,6 +25,10 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	//forma passada pra tela: view.addObject("pessoas", pessoaRepository.listarAllByName(nomepesquisa.trim().toUpperCase()));
 	@Query(value = "select c from Pessoa c where upper(trim(c.nome)) like %?1% ORDER BY c.id")
 	List<Pessoa> listarAllByName(String nome);
+			
+	//verificando se ja existe o email passado
+	@Query(value = "SELECT m FROM Pessoa m WHERE m.email = ?1")
+	List<Pessoa> verificarEmail(String email);
 	
 	//lista os usuarios pesquisados por nome usando paginacao
 	default Page<Pessoa> listarAllByNamePage(String nome, Pageable pageable) {

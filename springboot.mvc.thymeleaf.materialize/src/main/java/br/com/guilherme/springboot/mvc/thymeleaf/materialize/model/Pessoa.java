@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,10 +17,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -36,14 +39,20 @@ public class Pessoa implements Serializable {
 
 	@NotNull(message = "Nome não pode ser nulo")
 	@NotEmpty(message = "Nome não pode estar vazio")
+	@Column(length = 15)
 	private String nome;
 	
 	@NotNull(message = "Sobrenome não pode ser nulo")
 	@NotEmpty(message = "Sobrenome não pode estar vazio")
+	@Column(length = 30)
 	private String sobrenome;
 
+	//esta expressao nao esta muito boa, melhora-la depois
+	@Email(message = "E-Mail não valido")
+	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})$", message = "E-Mail não valido")
 	@NotNull(message = "E-Mail não pode ser nulo")
 	@NotEmpty(message = "E-Mail não pode estar vazio")
+	@Column(length = 60, unique = true)
 	private String email;
 	
 	@NotNull(message = "Sexo não pode ser nulo")

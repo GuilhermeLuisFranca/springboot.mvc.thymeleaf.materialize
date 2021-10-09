@@ -27,10 +27,6 @@ public class Telefone implements Serializable {
 	@NotEmpty(message = "Numero não pode estar vazio")
 	@Pattern(regexp = "^(\\(11\\) [9][0-9]{4}-[0-9]{4})|(\\(1[2-9]\\) [5-9][0-9]{3}-[0-9]{4})|(\\([2-9][1-9]\\) [5-9][0-9]{3}-[0-9]{4})$", message = "numero nao valido")
 	private String numero;
-	
-	@NotNull(message = "Tipo não pode ser nulo")
-	@NotEmpty(message = "Tipo não pode estar vazio")
-	private String tipo;
 		
 	@ManyToOne//muitos users em um
 	@ForeignKey(name = "pessoa_id")
@@ -50,12 +46,6 @@ public class Telefone implements Serializable {
 	}
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-	public String getTipo() {
-		return tipo;
-	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
 	}
 	public Pessoa getPessoa() {
 		return pessoa;

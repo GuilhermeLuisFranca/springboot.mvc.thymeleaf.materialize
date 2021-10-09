@@ -107,7 +107,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 			</div>
 			<div class="row" style="color: #fff;">
 				<div class="input-fiel col s6">
-					<input required="required" type="text" id="email" name="email" placeholder="E-Mail" th:field="*{email}">
+					<input required="required" type="email" id="email" name="email" placeholder="E-Mail (somente gmail)" th:field="*{email}" maxlength="60">
 				</div>
 				<div class="input-fiel col s6">	
 					<!-- carregando direto pelo front -->
@@ -122,10 +122,10 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 			</div>
 			<div class="row" style="color: #fff;">
 				<div class="input-fiel col s6">
-					<input required="required" type="text" id="nome" name="nome" placeholder="Nome" th:field="*{nome}">
+					<input required="required" type="text" id="nome" name="nome" placeholder="Nome" th:field="*{nome}" maxlength="15">
 				</div>
 				<div class="input-fiel col s6">		
-					<input required="required" type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome" th:field="*{sobrenome}">
+					<input required="required" type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome" th:field="*{sobrenome}" maxlength="30">
 				</div>
 			</div>
 			<div class="row" style="color: #fff;">

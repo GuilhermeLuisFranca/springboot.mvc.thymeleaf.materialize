@@ -53,7 +53,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	     <div class="row" style="font-size: 30px; color: #fff; font-family: roboto;">
 	       <p class="col s3">ID: <span th:text="${p.id}">;</span></p>
 	       <p class="col s3">Nome: <span th:text="${p.nome}">;</span></p>
-	       <p class="col s3">Sobrenome: <span th:text="${p.sobrenome}">;</span></p>
+	       <p class="col s3">Sobrenome: <span th:text="${p.email}">;</span></p>
 	       <p class="col s3">Idade: <span th:text="${p.idade}">;</span></p>
 	     </div>
 	 </div>
@@ -80,15 +80,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		 -->
 		<form th:action="@{/admin/addFonePessoa/{pessoaid}(pessoaid=${telefoneobj.id})}" method="post" class="col s12">
 			<div class="row">
-				<div class="input-fiel col s6">	
+				<div class="input-fiel col s12">	
 					<input required="required" type="text" id="numero" name="numero" placeholder="Numero: (99) 99999-9999 ou (99) 9999-9999">
-				</div>
-				<div class="input-fiel col s6">	
-					<select required="required" class="browser-default" id="tipo" name="tipo">
-						<option value="" disabled selected>[Selecione]</option>
-						<option value="CELULAR" th:text="Celular">
-						<option value="CASA" th:text="Casa-SERA-RETIRADO-EM-BREVE">
-					</select>	
 				</div>
 			</div>
 			<input type="submit" class="waves-effect waves-light btn" value="Enviar">
@@ -100,7 +93,6 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	    <tr style="color: #fff; font-family: roboto">
 	      <td>Id</td>
    	      <td>Numero</td>
-   	      <td>Tipo</td>
    	      <td>Deletar</td>
    	    </tr>
 	  </thead>
@@ -108,7 +100,6 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	    <tr th:each = "fone : ${telefones}" style="border-bottom: 2px solid black; color: #3FEEEE;">
 		  <td th:text = "${fone.id}"></td>
 		  <td th:text = "${fone.numero}"></td>
-		  <td th:text = "${fone.tipo}"></td>
 		  <td><a th:href="@{/admin/deletartelefone/{telefoneid}(telefoneid=${fone.id})}" style="color: red">Deletar</a></td>
 	    </tr> 
 	  </tbody>
