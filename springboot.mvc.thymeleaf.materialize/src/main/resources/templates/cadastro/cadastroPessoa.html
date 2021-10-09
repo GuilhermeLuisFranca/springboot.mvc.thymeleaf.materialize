@@ -112,7 +112,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 					<input required="required" type="text" id="email" name="email" placeholder="E-Mail" th:field="*{email}">
 				</div>
 				<div class="input-fiel col s6">	
-					<select required="required" class="browser-default" id="sexo" name="sexo">
+					<!-- carregando direto pelo front -->
+					<select required="required" class="browser-default" id="sexo" name="sexo" th:field="*{sexo}">
 						<option value="" disabled selected>[Selecione]</option>
 						<option value="MASCULINO" th:text="Masculino">
 						<option value="FEMININO" th:text="Feminino">
@@ -131,11 +132,13 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 			</div>
 			<div class="row" style="color: #fff;">
 				<div class="input-fiel col s6">
+					<!-- carregando pelo banco de dados -->
 					<select required="required" class="browser-default" id="profissao" name="profissao" th:field="*{profissao}">
 						<option th:each="p : ${profissoes}" th:value="${p.id}" th:text="${p.nome}">
 					</select>
 				</div>
 				<div class="input-fiel col s6">
+					<!-- carregando por enum -->
 					<select required="required" class="browser-default" id="cargo" name="cargo" th:field="*{cargo}">
 						<!-- tenke carregar direto da classe value passa os enum e no text passa os enum no seu nome formatado -->
 						<option th:each="c : ${T(br.com.guilherme.springboot.mvc.thymeleaf.materialize.enums.Cargo).values()}" th:value="${c}" th:text="${c.nome}">
@@ -174,17 +177,18 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	
 	
 	<fieldset style="border: 3px solid #333A3A;">
-		<legend style="font-size: 25px; color: #22DFEE;">Campo de Pesquisa</legend>
+		<legend style="font-size: 25px; color: #22DFEE;">Campo de Pesquisa, Lista e Download Relátorio</legend>
 		<div class="row">
 			<form action="pesquisarpessoa" method="post">
 				<div id="divBusca">
-					<input type="text" id="nomepesquisa" name="nomepesquisa" placeholder="Pesquisar" style="color: #1200FF !important;">
+					<input type="text" id="nomepesquisa" name="nomepesquisa" th:value="${nomepesquisa}" placeholder="Pesquisar" style="color: #1200FF !important;">
 			
 					<input class="btnBusca" type="submit" value="🔍">
 				</div>
 			</form>
 			<a class="waves-effect btn" style="background-color: #04FF3F; margin: -60px 0 0 40px;" th:href="@{/listaPessoas}">Listar Todos</a>
-			<a class="waves-effect btn" style="background-color: #F6A200; margin: -60px 0 0 0;" th:href="@{/imprimirRelatorio}">Download log completo PDF</a>
+			<a class="waves-effect btn" style="background-color: #F6A200; margin: -60px 0 0 0;" th:href="@{/imprimirRelatorio}">Download log completo PDF 
+				<span style="font-size: 10px; text-transform: lowercase;">(pode demorar um pouco)</span></a>
 		</div>
 	</fieldset>
 	
@@ -223,15 +227,15 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	
 	<div class="row" style="margin: 30px auto; text-align: center;">
 		<span th:if="${pessoas.hasPrevious()}">
-			<a th:href="@{/pessoaspag(page=${pessoas.number-1}, size=${pessoas.size})}">Anterior</a>
+			<a th:href="@{/pessoaspag(page=${pessoas.number-1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">Anterior</a>
 		</span>
 	
 		<th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
-			<a th:href="@{/pessoaspag(page=${i}, size=${pessoas.size})}">[[ ${i} + 1 ]]</a>
+			<a th:href="@{/pessoaspag(page=${i}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">[[ ${i} + 1 ]]</a>
 		</th:block>
 		
 		<span th:if="${pessoas.hasNext()}">
-			<a th:href="@{/pessoaspag(page=${pessoas.number+1}, size=${pessoas.size})}">Próximo</a>
+			<a th:href="@{/pessoaspag(page=${pessoas.number+1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">Próximo</a>
 		</span>
 	</div>
 	

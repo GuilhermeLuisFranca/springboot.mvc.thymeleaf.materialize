@@ -78,13 +78,26 @@ public class ControllerMaster {
 	
 	
 	@GetMapping("/pessoaspag")
-	public ModelAndView carregaPessoaPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView view) {
+	/**
+	 * 
+	 * @param pageable - faz a paginacao a cada 5 pessoas
+	 * 
+	 * @param view - setando direto em modelo de visualizacao
+	 * 
+	 * @param nomepesquisa - para na hora da paginacao se estiver em modo 
+	 * paginando pela pesquisa paginar corretamente
+	 * 
+	 * @return pra tela paginando sempre ordenado por id
+	 */
+	public ModelAndView carregaPessoaPorPaginacao(@PageableDefault(size = 5, sort = {"id"}) Pageable pageable, ModelAndView view, 
+			@RequestParam("nomepesquisa") String nomepesquisa) {
 		
-		Page<Pessoa> pagePessoa = pessoaRepository.findAll(pageable);
+		Page<Pessoa> pagePessoa = pessoaRepository.listarAllByNamePage(nomepesquisa, pageable);
+		view.addObject("pessoas", pagePessoa);//passa a lista
 		
-		view.addObject("pessoas", pagePessoa);
+		view.addObject("pessoaobj", new Pessoa());//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
 		
-		view.addObject("pessoaobj", new Pessoa());
+		view.addObject("nomepesquisa", nomepesquisa);//retorna o nome pesquisa no get na hora de selecionar uma paginacao
 		
 		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 		
@@ -98,7 +111,15 @@ public class ControllerMaster {
 	
 	@PostMapping(value =  "**/salvarPessoa", consumes = {"multipart/form-data"})
 	/**
-	 * se houver algum erro lanca a mensagem, se tudo der certo salva o cadastro e lista todos os usuarios
+	 * se houver algum erro lanca a mensagem, se tudo der certo salva o cadastro e lista todos os usuarios ordenado por id e paginado
+	 * 
+	 * @param pessoa - carrega este modelo direto do banco e ja carregando sua validacao
+	 * 
+	 * @param bindingResult - faz a validacao
+	 * 
+	 * @param file - para poder fazer o upload de algum arquivo em byte no banco
+	 * 
+	 * @return sempre para a tela de cadastro
 	 */
 	public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult, final MultipartFile file) throws IOException {	
 		
@@ -124,14 +145,14 @@ public class ControllerMaster {
 
 		} //senao houver erro segue o fluxo
 		
-		if(file.getSize() > 0) {//se tiver arquivo pra upload
+		if(file.getSize() > 0) {//se tiver arquivo pra upload faz
 			
 			pessoa.setArquivo(file.getBytes());
 			
 			pessoa.setTipoFileArquivo(file.getContentType());
 			pessoa.setNomeFileArquivo(file.getOriginalFilename());
 			
-		} else {
+		} else {//se nao tiver pega o ja existente em caso de edicao
 			if(pessoa.getId() != null && pessoa.getId() > 0) {//editando
 				
 				Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
@@ -145,7 +166,7 @@ public class ControllerMaster {
 		
 		ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
 		
-		pessoaRepository.save(pessoa);
+		pessoaRepository.save(pessoa);//salva os dados
 		
 		return view;
 		
@@ -155,7 +176,7 @@ public class ControllerMaster {
 	
 	@GetMapping("/listaPessoas")
 	/**
-	 * lista todos os cadastros, metodo apenas de demonstracao pois ao deletar ou criar/atualizar e ao abrir a pagina ja lista os cadastros
+	 * lista todos os cadastros e @return pra tela de cadastro
 	 */
 	public ModelAndView listaPessoas() {
 		
@@ -178,12 +199,15 @@ public class ControllerMaster {
 	@GetMapping("/editarpessoa/{idpessoa}")
 	/**
 	 * pega o id e bota todos os dados deste id do banco no formulario para poder atualizar
+	 * @param idpessoa - carrega direto o id da tela da pessoa para carregar em tela
+	 * 
+	 * @return pra tela de cadastro carregando os dados
 	 */
 	public ModelAndView editarPessoa(@PathVariable("idpessoa") Long idpessoa) {
 		
 		ModelAndView view = new ModelAndView("cadastro/cadastroPessoa");
 		
-		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);
+		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);//pega este id
 		
 		view.addObject("pessoaobj", pessoa.get());//passa para a tela os dados do id pra carrega no form
 		
@@ -198,6 +222,10 @@ public class ControllerMaster {
 	@GetMapping("/deletarpessoa/{idpessoa}")
 	/**
 	 * pega o id e exclui todos os dados deste id em seguida lista os cadastros
+	 * 
+	 * @param idpessoa - pega o id da pessoa pra poder deletar
+	 * 
+	 * @return pra uma tela que retorna para o metodo que carrega a tela de cadastro
 	 */
 	public ModelAndView deletarPessoa(@PathVariable("idpessoa") Long idpessoa) {
 		
@@ -213,15 +241,24 @@ public class ControllerMaster {
 	
 	@PostMapping("**/pesquisarpessoa")
 	/**
-	 * pesquisa um usario pelo nome
+	 * pesquisa um usario pelo nome ordenado por id
+	 * 
+	 * @param nomepesquisa - carrega o nome pesquisado para fazer a consulta
+	 * 
+	 * @param pageable - carrega a paginacao a cada 5 pessoas e ordenado pelo id
+	 * 
+	 * @return pra tela de cadastro carregando os dados
 	 */
-	public ModelAndView pesquisarPessoa(@RequestParam("nomepesquisa") String nomepesquisa) {
+	public ModelAndView pesquisarPessoa(@RequestParam("nomepesquisa") String nomepesquisa, @PageableDefault(size = 5, sort = {"id"}) Pageable pageable) {
 		
 		ModelAndView view = new ModelAndView("cadastro/cadastroPessoa");
 		
-		view.addObject("pessoas", pessoaRepository.listarAllByName(nomepesquisa.trim().toUpperCase()));//pesquisa
+		Page<Pessoa> pessoas = pessoaRepository.listarAllByNamePage(nomepesquisa, pageable);
+		view.addObject("pessoas", pessoas);//lista e pagina
 		
 		view.addObject("pessoaobj", new Pessoa());//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
+		
+		view.addObject("nomepesquisa", nomepesquisa);//passa para a tela os dados vazios do id onde sao carregados no form gracas ao metodo de edicao
 		
 		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 		
@@ -230,6 +267,79 @@ public class ControllerMaster {
 	}
 	
 	
+	
+	@GetMapping("**/imprimirRelatorio")
+	/**
+	 * pega pelo nome ou todos e faz um download em pdf
+	 */
+	public void imprimePdf(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+			
+		Iterable<Pessoa> iterator = pessoaRepository.listarAll();
+		
+		for (Pessoa pessoa : iterator) {
+			pessoas.add(pessoa);
+		}
+		
+		//chamar o serviço que faz a geraçao do relatorio
+		byte[] pdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
+		
+		//tamanho da resposta para o navegador
+		response.setContentLength(pdf.length);
+		
+		//definir na resposta o tipo de arquivo
+		response.setContentType("application/octet-stream");
+		
+		//difinir o cabecalho da resposta
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", "relatorio.pdf");
+		response.setHeader(headerKey, headerValue);
+		
+		//finaliza a resposta pro navegador
+		response.getOutputStream().write(pdf);
+		
+	}
+	
+	
+	
+	@GetMapping("/baixarArquivo/{idpessoa}")
+	/**
+	 * pega o id e baixa o arquivo deste id
+	 * 
+	 * @param idpessoa - pega o id da pessoa pra poder buscar o seu arquivo no banco
+	 * 
+	 * @param response - pra poder retorna a resposta que no caso e uma resposta do download
+	 * 
+	 * @throws IOException 
+	 */
+	public void baixarArquivo(@PathVariable("idpessoa") Long idpessoa, HttpServletResponse response) throws IOException {
+		
+		//consultar o objeto pessoa no banco de dados
+		Pessoa pessoa = pessoaRepository.findById(idpessoa).get();
+		if(pessoa.getArquivo() != null) {//se exitir arquivo pra fazer download
+			
+			//setar tamanho da resposta
+			response.setContentLength(pessoa.getArquivo().length);
+			
+			//tipo do arquivo para download ou pode ser generica application/octet-stream
+			response.setContentType(pessoa.getTipoFileArquivo());
+			
+			//define o cabecalho da resposta
+			String headerKey = "Content-Disposition";
+			String headerValue = String.format("attachment; filename=\"%s\"", pessoa.getNomeFileArquivo());
+			response.setHeader(headerKey, headerValue);
+			
+			//finaliza a resposta passando o arquivo
+			response.getOutputStream().write(pessoa.getArquivo());
+			
+		}
+		
+	}
+	
+	/**
+	 * daqui pra baixo documentacao ainda a ser completa
+	 */
 	
 	@GetMapping("/telefones/{idpessoa}")
 	/**
@@ -315,67 +425,7 @@ public class ControllerMaster {
 		
 	}
 	
-	@GetMapping("**/imprimirRelatorio")
-	/**
-	 * pega pelo nome ou todos e faz um download em pdf
-	 */
-	public void imprimePdf(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		List<Pessoa> pessoas = new ArrayList<Pessoa>();
-			
-		Iterable<Pessoa> iterator = pessoaRepository.listarAll();
-		
-		for (Pessoa pessoa : iterator) {
-			pessoas.add(pessoa);
-		}
-		
-		//chamar o serviço que faz a geraçao do relatorio
-		byte[] pdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
-		
-		//tamanho da resposta para o navegador
-		response.setContentLength(pdf.length);
-		
-		//definir na resposta o tipo de arquivo
-		response.setContentType("application/octet-stream");
-		
-		//difinir o cabecalho da resposta
-		String headerKey = "Content-Disposition";
-		String headerValue = String.format("attachment; filename=\"%s\"", "relatorio.pdf");
-		response.setHeader(headerKey, headerValue);
-		
-		//finaliza a resposta pro navegador
-		response.getOutputStream().write(pdf);
-		
-	}
 	
-	@GetMapping("/baixarArquivo/{idpessoa}")
-	/**
-	 * pega o id e baixa o curriculo deste id
-	 * @throws IOException 
-	 */
-	public void baixarArquivo(@PathVariable("idpessoa") Long idpessoa, HttpServletResponse response) throws IOException {
-		
-		//consultar o objeto pessoa no banco de dados
-		Pessoa pessoa = pessoaRepository.findById(idpessoa).get();
-		if(pessoa.getArquivo() != null) {//se exitir arquivo pra fazer download
-			
-			//setar tamanho da resposta
-			response.setContentLength(pessoa.getArquivo().length);
-			
-			//tipo do arquivo para download ou pode ser generica application/octet-stream
-			response.setContentType(pessoa.getTipoFileArquivo());
-			
-			//define o cabecalho da resposta
-			String headerKey = "Content-Disposition";
-			String headerValue = String.format("attachment; filename=\"%s\"", pessoa.getNomeFileArquivo());
-			response.setHeader(headerKey, headerValue);
-			
-			//finaliza a resposta passando o arquivo
-			response.getOutputStream().write(pessoa.getArquivo());
-			
-		}
-		
-	}
 	
 	
 	
