@@ -60,8 +60,6 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 }
 </style>
 </head>
-<!-- se o usuario for usuario basico dara um aviso que ele nao tem acesso a pagina -->
-<body sec:authorize="hasRole('ROLE_USER')"><h1 style="color: white;">Apenas admins tem acesso</h1></body>
 <body sec:authorize="hasRole('ROLE_ADMIN')"><!-- CARREGA O BODY APENAS PRO ADMIN -->
 
 	<!-- logout aqui -->
@@ -89,7 +87,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		<!-- 
 		 - seguinda para o formulario de cadastro
 		 -->
-		<form action="salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}" enctype="multipart/form-data">
+		<form action="/admin/salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}" enctype="multipart/form-data">
 			<div class="row" style="color: #fff;">
 				<div class="input-fiel col s12">
 					<label style="font-size: 20px; color: white;" for="file" class="active">Arquivo</label>
@@ -170,7 +168,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 				</div>
 			</div>
 			<input type="submit" class="waves-effect waves-light btn" value="Enviar">
-			<button type="button" class="waves-effect waves-light btn" style="background-color: yellow;" onclick="document.getElementById('FormSalvarPessoa').reset();">NOVO</button>
+			<button type="button" class="waves-effect waves-light btn" style="background-color: yellow;" 
+																					onclick="document.getElementById('FormSalvarPessoa').reset();">NOVO</button>
 		</form>
 	</div>
 	
@@ -179,15 +178,15 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	<fieldset style="border: 3px solid #333A3A;">
 		<legend style="font-size: 25px; color: #22DFEE;">Campo de Pesquisa, Lista e Download Relátorio</legend>
 		<div class="row">
-			<form action="pesquisarpessoa" method="post">
+			<form action="/admin/pesquisarpessoa" method="post">
 				<div id="divBusca">
 					<input type="text" id="nomepesquisa" name="nomepesquisa" th:value="${nomepesquisa}" placeholder="Pesquisar" style="color: #1200FF !important;">
 			
 					<input class="btnBusca" type="submit" value="🔍">
 				</div>
 			</form>
-			<a class="waves-effect btn" style="background-color: #04FF3F; margin: -60px 0 0 40px;" th:href="@{/listaPessoas}">Listar Todos</a>
-			<a class="waves-effect btn" style="background-color: #F6A200; margin: -60px 0 0 0;" th:href="@{/imprimirRelatorio}">Download log completo PDF 
+			<a class="waves-effect btn" style="background-color: #04FF3F; margin: -60px 0 0 40px;" th:href="@{/admin/listaPessoas}">Listar Todos</a>
+			<a class="waves-effect btn" style="background-color: #F6A200; margin: -60px 0 0 0;" th:href="@{/admin/imprimirRelatorio}">Download log completo PDF 
 				<span style="font-size: 10px; text-transform: lowercase;">(pode demorar um pouco)</span></a>
 		</div>
 	</fieldset>
@@ -214,28 +213,28 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		  <td th:text = "${pessoa.nome}"></td>
 		  <td th:text = "${pessoa.email}"></td>
 		  <td th:text = "${pessoa.cep}"></td>
-		  <td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #EAFF00">Editar</a></td>
-		  <td><a th:href="@{/deletarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: red">Deletar</a></td>
+		  <td><a th:href="@{/admin/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #EAFF00">Editar</a></td>
+		  <td><a th:href="@{/admin/deletarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" style="color: red">Deletar</a></td>
 		  <td>
-		  	<a th:if="${pessoa.arquivo != null}" th:href="@{/baixarArquivo/{idpessoa}(idpessoa=${pessoa.id})}" style="color: orange;">Download</a>
+		  	<a th:if="${pessoa.arquivo != null}" th:href="@{/admin/baixarArquivo/{idpessoa}(idpessoa=${pessoa.id})}" style="color: orange;">Download</a>
 		  	<a th:if="${pessoa.arquivo == null}">Sem Arquivo</a><!-- se nao tiver arquivo avisa -->
 		  </td>
-		  <td><a th:href = "@{/telefones/{idpessoa}(idpessoa=${pessoa.id})}" style="color: blue;">Add Telefone</a></td>
+		  <td><a th:href = "@{/admin/telefones/{idpessoa}(idpessoa=${pessoa.id})}" style="color: blue;">Add Telefone</a></td>
 	    </tr>
 	  </tbody>
 	</table>
 	
 	<div class="row" style="margin: 30px auto; text-align: center;">
 		<span th:if="${pessoas.hasPrevious()}">
-			<a th:href="@{/pessoaspag(page=${pessoas.number-1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">Anterior</a>
+			<a th:href="@{/admin/pessoaspag(page=${pessoas.number-1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">Anterior</a>
 		</span>
 	
 		<th:block th:each="i : ${#numbers.sequence(0, pessoas.totalPages - 1)}">
-			<a th:href="@{/pessoaspag(page=${i}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">[[ ${i} + 1 ]]</a>
+			<a th:href="@{/admin/pessoaspag(page=${i}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">[[ ${i} + 1 ]]</a>
 		</th:block>
 		
 		<span th:if="${pessoas.hasNext()}">
-			<a th:href="@{/pessoaspag(page=${pessoas.number+1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">Próximo</a>
+			<a th:href="@{/admin/pessoaspag(page=${pessoas.number+1}, size=${pessoas.size}, nomepesquisa=${nomepesquisa})}">Próximo</a>
 		</span>
 	</div>
 	

@@ -57,7 +57,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/cadastroPessoa")
+	@GetMapping("**/admin/cadastroPessoa")
 	/**
 	 * @return para a pagina de CRUD da tabela pessoa
 	 */
@@ -77,7 +77,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/pessoaspag")
+	@GetMapping("**/admin/pessoaspag")
 	/**
 	 * 
 	 * @param pageable - faz a paginacao a cada 5 pessoas
@@ -109,7 +109,7 @@ public class ControllerMaster {
 	
 	
 	
-	@PostMapping(value =  "**/salvarPessoa", consumes = {"multipart/form-data"})
+	@PostMapping(value =  "**/admin/salvarPessoa", consumes = {"multipart/form-data"})
 	/**
 	 * se houver algum erro lanca a mensagem, se tudo der certo salva o cadastro e lista todos os usuarios ordenado por id e paginado
 	 * 
@@ -174,7 +174,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/listaPessoas")
+	@GetMapping("**/admin/listaPessoas")
 	/**
 	 * lista todos os cadastros e @return pra tela de cadastro
 	 */
@@ -196,7 +196,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/editarpessoa/{idpessoa}")
+	@GetMapping("**/admin/editarpessoa/{idpessoa}")
 	/**
 	 * pega o id e bota todos os dados deste id do banco no formulario para poder atualizar
 	 * @param idpessoa - carrega direto o id da tela da pessoa para carregar em tela
@@ -209,6 +209,8 @@ public class ControllerMaster {
 		
 		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);//pega este id
 		
+		view.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));//lista e pagina
+		
 		view.addObject("pessoaobj", pessoa.get());//passa para a tela os dados do id pra carrega no form
 		
 		view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
@@ -219,7 +221,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/deletarpessoa/{idpessoa}")
+	@GetMapping("**/admin/deletarpessoa/{idpessoa}")
 	/**
 	 * pega o id e exclui todos os dados deste id em seguida lista os cadastros
 	 * 
@@ -239,7 +241,7 @@ public class ControllerMaster {
 	
 	
 	
-	@PostMapping("**/pesquisarpessoa")
+	@PostMapping("**/admin/pesquisarpessoa")
 	/**
 	 * pesquisa um usario pelo nome ordenado por id
 	 * 
@@ -268,7 +270,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("**/imprimirRelatorio")
+	@GetMapping("**/admin/imprimirRelatorio")
 	/**
 	 * pega pelo nome ou todos e faz um download em pdf
 	 */
@@ -303,7 +305,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/baixarArquivo/{idpessoa}")
+	@GetMapping("**/admin/baixarArquivo/{idpessoa}")
 	/**
 	 * pega o id e baixa o arquivo deste id
 	 * 
@@ -341,7 +343,7 @@ public class ControllerMaster {
 	 * daqui pra baixo documentacao ainda a ser completa
 	 */
 	
-	@GetMapping("/telefones/{idpessoa}")
+	@GetMapping("**/admin/telefones/{idpessoa}")
 	/**
 	 * resgata o id do usuario selecionado p adicionar telefone e redireciona
 	 * para a pagina pronto p adicionar excluir ou editar numero, e tbm ja lista
@@ -363,7 +365,7 @@ public class ControllerMaster {
 	
 	
 	
-	@PostMapping("addFonePessoa/{pessoaid}")
+	@PostMapping("**/admin/addFonePessoa/{pessoaid}")
 	/**
 	 * grava a o telefone em um pra muito p algum usuario
 	 */
@@ -405,7 +407,7 @@ public class ControllerMaster {
 	
 	
 	
-	@GetMapping("/deletartelefone/{telefoneid}")
+	@GetMapping("**/admin/deletartelefone/{telefoneid}")
 	/**
 	 * deleta um telefone
 	 */

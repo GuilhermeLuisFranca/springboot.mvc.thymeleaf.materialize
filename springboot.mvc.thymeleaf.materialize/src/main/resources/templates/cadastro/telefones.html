@@ -35,8 +35,6 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 .row> input{color: #3FEEEE !important;}
 </style>
 </head>
-<!-- se o usuario for usuario basico dara um aviso que ele nao tem acesso a pagina -->
-<body sec:authorize="hasRole('ROLE_USER')"><h1 style="color: white;">Apenas admins tem acesso</h1></body>
 <body sec:authorize="hasRole('ROLE_ADMIN')"><!-- CARREGA O BODY APENAS PRO ADMIN -->
 
 	<!-- logout aqui -->
@@ -48,7 +46,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 
 	<h1 style="color: #fff; font-family: roboto">Telefones Pessoa</h1>
 	
-	<a style="text-decoration: underline; font-size: 45px" th:href="@{/cadastroPessoa}">Cadastro Pessoa</a>
+	<a style="text-decoration: underline; font-size: 45px" th:href="@{/admin/cadastroPessoa}">Cadastro Pessoa</a>
 	
 	
 	 <div th:each="p : ${telefoneobj}">
@@ -80,7 +78,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		 - invoca metodo addFonePessoa, passa a url na variavel path que chegara 
 		 - preenchida com o id que ja esta sendo usado ao entrar na pagina
 		 -->
-		<form th:action="@{/addFonePessoa/{pessoaid}(pessoaid=${telefoneobj.id})}" method="post" class="col s12">
+		<form th:action="@{/admin/addFonePessoa/{pessoaid}(pessoaid=${telefoneobj.id})}" method="post" class="col s12">
 			<div class="row">
 				<div class="input-fiel col s6">	
 					<input required="required" type="text" id="numero" name="numero" placeholder="Numero: (99) 99999-9999 ou (99) 9999-9999">
@@ -111,7 +109,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		  <td th:text = "${fone.id}"></td>
 		  <td th:text = "${fone.numero}"></td>
 		  <td th:text = "${fone.tipo}"></td>
-		  <td><a th:href="@{/deletartelefone/{telefoneid}(telefoneid=${fone.id})}" style="color: red">Deletar</a></td>
+		  <td><a th:href="@{/admin/deletartelefone/{telefoneid}(telefoneid=${fone.id})}" style="color: red">Deletar</a></td>
 	    </tr>
 	  </tbody>
 	</table>

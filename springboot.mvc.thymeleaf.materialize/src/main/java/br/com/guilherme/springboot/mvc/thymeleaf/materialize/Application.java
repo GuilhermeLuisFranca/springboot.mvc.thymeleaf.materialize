@@ -41,9 +41,9 @@ public class Application implements WebMvcConfigurer {
 	//printa no console varias querys para usar no pessoa, e tbm deleta
 	/*
 	public static void main(String[] args) {
-		for (int i = 100; i < 300; i++) {
+		for (int i = 2000; i < 2080; i++) {
 			//execute este para inserir
-			// System.out.println("INSERT INTO pessoa(id, email, idade, nome, sobrenome, bairro, cep, cidade, ibge, rua, uf, sexo, profissao_id, cargo, data_nascimento)VALUES \n" + "("+i+", 'emailexample"+i+"@gmail.com', 18, 'name', 'subname', 'pos', '15897-9', 'city', '6544654', 'streeth', 'PR','MASCULINO', 1, 'GERENTE', '2003-01-12');\n");
+			 System.out.println("INSERT INTO pessoa(id, email, idade, nome, sobrenome, bairro, cep, cidade, ibge, rua, uf, sexo, profissao_id, cargo, data_nascimento)VALUES \n" + "("+i+", 'emailexample"+i+"@gmail.com', 18, 'name', 'subname', 'pos', '15897-9', 'city', '6544654', 'streeth', 'PR','MASCULINO', 1, 'GERENTE', '2003-01-12');\n");
 			
 			//execute este caso queira deletar
 			// System.out.println("DELETE FROM pessoa\n" + " WHERE id = "+i+";");

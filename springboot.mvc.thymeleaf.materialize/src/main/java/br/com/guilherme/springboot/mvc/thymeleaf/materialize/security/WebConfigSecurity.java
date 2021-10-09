@@ -24,7 +24,16 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter{
 		.disable()//Desativa as configurações padrão de memória.
 		.authorizeRequests()//Pertimir restringir acessos
 		.antMatchers(HttpMethod.GET, "/").permitAll()//Qualquer usuário acessa as paginas que nao estiverem em uma pasta
-		//.antMatchers(HttpMethod.GET, "/cadastroPessoa").hasAnyRole("ADMIN")//Apenas admin tem acesso
+		.antMatchers("admin",
+				"/admin", 			
+				"**/admin",			//nao e preciso
+				"admin/",			//especificar tao
+				"admin/**",			//bem, fiz apenas
+				"/admin/",			//para ter 100% de
+				"**/admin/",		//certeza
+				"/admin/**",
+				"**/admin/**")
+			.hasAnyRole("ADMIN")//Mapeia com /admin em todos os http que quer que apenas admin tenha acesso
 		.anyRequest().authenticated()
 		.and().formLogin().permitAll()//permite qualquer usuário
 		.loginPage("/login")//diz qual a pagina de login
@@ -51,7 +60,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter{
 	
 	@Override // Ignora URL especificas
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/static/**");
+		web.ignoring().antMatchers("/static/**");//url padra a ser ignorada
 	}
 
 }
