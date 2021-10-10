@@ -84,6 +84,9 @@ public class Pessoa implements Serializable {
 	private byte[] arquivo;
 	
 	private String nomeFileArquivo, tipoFileArquivo;
+	
+	@Column(nullable = true, columnDefinition = "TEXT", length = 10000)
+	private String imagem;
 
 	
 	//getters and setters
@@ -200,6 +203,12 @@ public class Pessoa implements Serializable {
 	}
 	public void setTipoFileArquivo(String tipoFileArquivo) {
 		this.tipoFileArquivo = tipoFileArquivo;
+	}
+	public String getImagem() {
+		return imagem;
+	}
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
 	
 	

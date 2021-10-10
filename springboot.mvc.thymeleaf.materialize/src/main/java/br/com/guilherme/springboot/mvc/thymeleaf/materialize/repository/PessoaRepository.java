@@ -7,6 +7,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	//verificando se ja existe o email passado
 	@Query(value = "SELECT m FROM Pessoa m WHERE m.email = ?1")
 	List<Pessoa> verificarEmail(String email);
-	
+
 	//lista os usuarios pesquisados por nome usando paginacao
 	default Page<Pessoa> listarAllByNamePage(String nome, Pageable pageable) {
 		

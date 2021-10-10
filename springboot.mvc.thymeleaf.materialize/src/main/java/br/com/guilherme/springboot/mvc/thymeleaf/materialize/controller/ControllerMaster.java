@@ -14,14 +14,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -242,6 +251,42 @@ public class ControllerMaster {
 	
 	
 	
+	@GetMapping("**/admin/imagem/{idpessoa}")
+	/**
+	 *
+	 * 
+	 */
+	public ModelAndView carregarImagem(@PathVariable("idpessoa") Long idpessoa) {
+		
+		ModelAndView view = new ModelAndView("cadastro/editarImg");
+		
+		Optional<Pessoa> img = pessoaRepository.findById(idpessoa);//pega este id
+		
+		view.addObject("pessoaobj", img.get());//passa para a tela os dados do id pra carrega no form
+		
+		return view;
+		
+	}
+	
+	
+	
+	@PostMapping(value = "**/admin/FileUpload") /* mapeia a url */
+	@ResponseBody/* Descricao da resposta */
+	/**
+	 * faz upload do arquivo da tabela de dados unicos
+	 */
+	public ResponseEntity<Pessoa> salvarImagem(@RequestBody Pessoa pessoa) {//Recebe os dados para salvar
+		
+		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));//antes de salvar vai carregar o objeto tel pro pessoa pra nao dar erro de cascade
+		
+		Pessoa pessoaImg = pessoaRepository.saveAndFlush(pessoa);
+		
+		return new ResponseEntity<Pessoa>(pessoaImg, HttpStatus.CREATED);
+		
+	}
+	
+	
+	
 	@GetMapping("**/admin/deletarpessoa/{idpessoa}")
 	/**
 	 * pega o id e exclui todos os dados deste id em seguida lista os cadastros
@@ -360,9 +405,7 @@ public class ControllerMaster {
 		
 	}
 	
-	/**
-	 * daqui pra baixo documentacao ainda a ser completa
-	 */
+	
 	
 	@GetMapping("**/admin/telefones/{idpessoa}")
 	/**

@@ -41,14 +41,164 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 	
 	<form class="col-sm-8 img-upload-section" th:object="${pessoaobj}">
 		<input style="display: none;" name="id" id="id" type="text" th:field="*{id}" readonly="readonly"><!-- pra saber qual o id a ser editado -->
-		<input style="display: none;" name="imgVazio" id="imgVazio" type="text" th:field="*{imagem}" readonly="readonly"><!-- pra se nao selecionar new imagem ira carregar a ja existente -->
+		<input style="display: none;" id="imgVazio" type="text" th:field="*{imagem}" readonly="readonly"><!-- pra se nao selecionar new imagem ira carregar a ja existente -->
 	    <input name="imagem" type="file" accept="image/*" id="menu_images" /><br>
 	    <img width="200" height="200" id="menu_image" class="preview_img" th:src="*{imagem}"/><br>
-	    <button type="button" onclick="uploadFile()" style="width: 120px; height: 40px; font-size: 25px;">Submit</button>
+	    <button type="button" onclick="uploadFile();" style="width: 120px; height: 40px; font-size: 25px;">Submit</button>
+	    <input style="display: none;" type="text" name="bairro" id="bairro" th:field="*{bairro}">
+		<input style="display: none;" type="text" name="cargo" id="cargo" th:field="*{cargo}">
+	    <input style="display: none;" type="text" name="cep" id="cep" th:field="*{cep}">
+		<input style="display: none;" type="text" name="cidade" id="cidade" th:field="*{cidade}">
+	    <input style="display: none;" type="text" name="dataNascimento" id="dataNascimento" th:field="*{dataNascimento}">
+		<input style="display: none;" type="text" name="email" id="email" th:field="*{email}">
+	    <input style="display: none;" type="text" name="ibge" id="ibge" th:field="*{ibge}">
+		<input style="display: none;" type="text" name="idade" id="idade" th:field="*{idade}">
+	    <input style="display: none;" type="text" name="nome" id="nome" th:field="*{nome}">
+	    <input style="display: none;" type="text" name="rua" id="rua" th:field="*{rua}">
+		<input style="display: none;" type="text" name="sexo" id="sexo" th:field="*{sexo}">
+		<input style="display: none;" type="text" name="sobrenome" id="sobrenome" th:field="*{sobrenome}">
+		<input style="display: none;" type="text" name="uf" id="uf" th:field="*{uf}">
 	</form>
 
 </body>
 <script type="text/javascript">
+
+function uploadFile() {
+	var arq = $("#menu_images").val();
+
+	//se existir arquivo tranforma em base 64 e lanca pro back
+	if(arq != null || arq == null && arq.trim() != ''){
+		var id = $("#id").val();
+		var target = document.querySelector("#menu_image");
+	    var file = document.querySelector("#menu_images").files[0];
+		var bairro = $("#bairro").val();
+		var cargo = $("#cargo").val();
+		var cep = $("#cep").val();
+		var cidade = $("#cidade").val();
+		var dataNascimento = $("#dataNascimento").val();
+		var email = $("#email").val();
+		var ibge = $("#ibge").val();
+		var idade = $("#idade").val();
+		var nome = $("#nome").val();
+		var rua = $("#rua").val();
+		var sexo = $("#sexo").val();
+		var sobrenome = $("#sobrenome").val();
+		var uf = $("#uf").val();
+	
+	    var reader = new FileReader();
+	
+	    reader.onloadend = function() {
+	        target.src = reader.result;
+	        ///////////***Upload AJAX***\\\\\\\\\\\\\\\
+	        $.ajax({
+				method : "POST",
+				url : "admin/FileUpload",
+				data : JSON.stringify({ 
+		        	id : id,
+		        	imagem : reader.result,
+					bairro : bairro,
+					cargo : cargo,
+					cep : cep,
+					cidade : cidade,
+					dataNascimento : dataNascimento,
+					email : email,
+					ibge : ibge,
+					idade : idade,
+					nome : nome,
+					rua : rua,
+					sexo : sexo,
+					sobrenome : sobrenome,
+					uf : uf}),
+				contentType : "application/json; charset=utf-8"
+			}).done(function(response) {
+				alert("Sucesso");
+				window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Error: " + xhr.responseText);
+			});
+	    };
+	    
+	    if(file) {
+	        reader.readAsDataURL(file);
+	    } else {
+	        target.src = "";
+	    }
+	}
+	
+	//se nao existir arquivo vai pega o que o id ja tem e vai usa-lo
+    if (arq == null || arq != null && arq.trim() == ''){
+		var imagemVazia = $("#imgVazio").val();
+		var bairro = $("#bairro").val();
+		var cargo = $("#cargo").val();
+		var cep = $("#cep").val();
+		var cidade = $("#cidade").val();
+		var dataNascimento = $("#dataNascimento").val();
+		var email = $("#email").val();
+		var ibge = $("#ibge").val();
+		var idade = $("#idade").val();
+		var nome = $("#nome").val();
+		var rua = $("#rua").val();
+		var sexo = $("#sexo").val();
+		var sobrenome = $("#sobrenome").val();
+		var uf = $("#uf").val();
+		
+		$.ajax({
+	        method : "POST",
+	        url : "admin/FileUpload",
+	        data : JSON.stringify({ 
+	        	id : id,
+	        	imagem : imagemVazia,
+				bairro : bairro,
+				cargo : cargo,
+				cep : cep,
+				cidade : cidade,
+				dataNascimento : dataNascimento,
+				email : email,
+				ibge : ibge,
+				idade : idade,
+				nome : nome,
+				rua : rua,
+				sexo : sexo,
+				sobrenome : sobrenome,
+				uf : uf}),
+	        contentType : "application/json; charset=utf-8"
+	    }).done(function(response) {
+	        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
+	    }).fail(function(xhr, status, errorThrown) {
+	        alert("Error: " + xhr.responseText);
+	    });
+	}
+    
+}
+
+document.getElementById("menu_images").onchange = function () {
+    var reader = new FileReader();
+    if(this.files[0].size>8e+6){
+        alert("Tamanho maximo de imagem e 8mb");
+        $("#menu_image").attr("src","blank");
+        $("#menu_image").hide();  
+        $('#menu_images').wrap('<form>').closest('form').get(0).reset();
+        $('#menu_images').unwrap();     
+        return false;
+    }
+    if(this.files[0].type.indexOf("image")==-1){
+        alert("Invalid Type");
+        $("#menu_image").attr("src","blank");
+        $("#menu_image").hide();  
+        $('#menu_images').wrap('<form>').closest('form').get(0).reset();
+        $('#menu_images').unwrap();         
+        return false;
+    }   
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("menu_image").src = e.target.result;
+        $("#menu_image").show(); 
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+</script><!--
 function uploadFile() {
 	var arq = $("#menu_images").val();
 
@@ -132,6 +282,5 @@ document.getElementById("menu_images").onchange = function () {
 
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
-};
-</script>
+};-->
 </html>
