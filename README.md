@@ -1,9 +1,8 @@
 <h1>Projeto de Estudo em Spring com Thymeleaf</h1>
 
-<br><br>
+<br>
 
-<h2>Tecnologias Usadas:</h2>
-<span>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</span>
+<span><h2>Tecnologias Usadas:</h2>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</span>
 <h3>Sistema Web não responsivo</h3>
 
 
