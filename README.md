@@ -2,9 +2,9 @@
 
 <br><br>
 
-<h2>Tecnologias Usadas:</h2><br>
-<p>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</p>
-<p>Sistema Web não responsivo</p>
+<h2>Tecnologias Usadas:</h2>
+<span>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</span>
+<h3>Sistema Web não responsivo</h3>
 
 
 -- criacao do banco de dados <br>
