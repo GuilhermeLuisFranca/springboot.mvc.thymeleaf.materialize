@@ -1,21 +1,31 @@
 <h1>Projeto de Estudo em Spring com Thymeleaf</h1>
 
-<br>
 
-<span><h2>Tecnologias Usadas:</h2>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</span>
-<h3>Sistema Web não responsivo</h3>
+<h2>Tecnologias Usadas:</h2>
+<h3>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</h3>
+
+<h2>Sistema Web não responsivo</h2>
+
+<h1>O Que Você Encontra Aqui?:</h1>
+<h3>Role entre tabelas para definir quem tem acesso a quais partes do sistema;</h3><br>
+<h3>Authenticacao direto do banco com criptografia na senha;</h3><br>
+
+<h3>CRUD de pessoa com estas funcionalidades:</h3>
+<h4>Inserir:</h4>
+<h5>Arquivo(apenas para adicionar mesmo);</h5>
+<h5>Data de nascimento que ate faz automanticamente o calculo de idade dado a data de nascimento(esta idade e validada no back-end com a regra que so pode ter entre 18 a 100 anos);</h5>
+<h5>E-Mail(apenas com uma valicao bem simples pro gMail usando expressao regular);</h5>
+<h5>Sexo(por selecionador que carrega direto do Front-End);</h5>
+<h5>Nome e Sobrenome(com um tamanho maximo definido de caracteres);</h5>
+<h5>Profissao(por selecionador que carrega do banco de dados em uma tabela relacionada);</h5>
+<h5>Cargo(por selecionador que carrega por um enum);</h5>
+<h5>Cep e Derivados, Usando aqui inclusive a WebService do cep que se adicionado um cep valido completa os outros campos automanticamente(tem im link no form pra caso queira gerar um cep valido);</h5>
 
 
--- criacao do banco de dados <br>
-CREATE DATABASE "spring-boot-thymeleaf"
-  WITH OWNER = postgres
-       ENCODING = 'UTF8'
-       TABLESPACE = pg_default
-       LC_COLLATE = 'Portuguese_Brazil.1252'
-       LC_CTYPE = 'Portuguese_Brazil.1252'
-       CONNECTION LIMIT = -1;
 
-=== execute as querys a seguir apos a criacao do banco e o primeiro start do projeto apos criar as tabelas ===
+
+
+<h1>as querys a seguir apos o primeiro start</h1>
 
 -- deleta o unique do usuariorole para poder depois cria-lo novamente e assim poder ter varios usuarios cadastrados em um role <br>
 ALTER TABLE usuarios_role DROP
