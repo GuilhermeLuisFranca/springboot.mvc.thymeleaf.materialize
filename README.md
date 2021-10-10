@@ -1,9 +1,10 @@
-<h1 style="text-align: center;">Projeto de Estudo em Spring com Thymeleaf</h1>
+<h1>Projeto de Estudo em Spring com Thymeleaf</h1>
 
-No momento:
-projeto com authenticacao, controle de acesso entre determinados usuarios, CRUD de pessoa com um relacionamento com outra tabela para cadastras varios telefones a esta pessoa
+<br><br>
 
-Projeto usa springboot, springsecurity, thymeleaf, PostgreSQL, materialize no ausilio do CSS
+<h2>Tecnologias Usadas:</h2><br>
+<p>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</p>
+<p>Sistema Web não responsivo</p>
 
 
 -- criacao do banco de dados <br>
