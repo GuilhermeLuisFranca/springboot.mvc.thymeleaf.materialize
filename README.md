@@ -34,7 +34,7 @@
 
 <h1>DataBase:</h1>
 <h2>crie o banco com o nome spring-boot-thymeleaf e o usuario postgres</h2>
-
+<h2>DICA: não esqueca de no pom.xml colocar o driver de acordo com a versao do teu banco</h2>
 <h2>querys a seguir apos o primeiro start do sistema</h2>
 -- deleta o unique do usuariorole para poder depois cria-lo novamente e assim poder ter varios usuarios cadastrados em um role <br>
 ALTER TABLE usuarios_role DROP<br>
