@@ -90,7 +90,7 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		<form action="/admin/salvarPessoa" method="post" id="FormSalvarPessoa" th:object="${pessoaobj}" enctype="multipart/form-data">
 			<div class="row" style="color: #fff;">
 				<div class="input-fiel col s12">
-					<label style="font-size: 20px; color: white;" for="file" class="active">Arquivo</label>
+					<label style="font-size: 20px; color: white;" for="file" class="active">Arquivo não obrigatorio</label>
 					<input type="file" id="file" name="file" class="validate">
 				</div>
 			</div>
@@ -221,7 +221,12 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 		  	<a th:if="${pessoa.arquivo == null}">Sem Arquivo</a><!-- se nao tiver arquivo avisa -->
 		  </td>
 		  <td><a th:href = "@{/admin/telefones/{idpessoa}(idpessoa=${pessoa.id})}" style="color: blue;">Add Telefone</a></td>
-		  <td><a th:href = "@{/admin/imagem/{idpessoa}(idpessoa=${pessoa.id})}" style="color: blue;">Add Telefone</a></td>
+		  <td>
+		  	<img th:if="${pessoa.imagem != null}" width="50" height="50" th:src="${pessoa.imagem}"/>
+		  	<a th:if="${pessoa.imagem != null}" th:href = "@{/admin/imagem/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #04FF3F;">Editar Imagem</a>
+		  	<img th:if="${pessoa.imagem == null}" width="50" height="50" src="http://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg"/>
+		  	<a th:if="${pessoa.imagem == null}" th:href = "@{/admin/imagem/{idpessoa}(idpessoa=${pessoa.id})}" style="color: #04FF3F;">Adicionar Imagem</a>
+		  </td>
 	    </tr>
 	  </tbody>
 	</table>

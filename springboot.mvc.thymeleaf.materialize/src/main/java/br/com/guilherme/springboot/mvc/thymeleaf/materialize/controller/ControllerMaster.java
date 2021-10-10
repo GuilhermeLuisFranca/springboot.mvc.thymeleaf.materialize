@@ -134,6 +134,8 @@ public class ControllerMaster {
 		
 		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));//antes de salvar vai carregar o objeto tel pro pessoa pra nao dar erro de cascade
 		
+		
+		
 		//se houver erros vindo da validacao do modelo
 		if(bindingResult.hasErrors()) {
 			
@@ -175,7 +177,7 @@ public class ControllerMaster {
 		
 		
 		
-		if(file.getSize() > 0) {//se tiver arquivo pra upload faz
+		if(file.getSize() > 0) {//se tiver arquivo faz o upload
 			
 			pessoa.setArquivo(file.getBytes());
 			
@@ -193,6 +195,10 @@ public class ControllerMaster {
 				
 			}
 		}
+		
+		//pra nao perder a imagem
+		Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
+		pessoa.setImagem(pessoaTempo.getImagem());
 		
 		ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
 		
@@ -254,7 +260,9 @@ public class ControllerMaster {
 	@GetMapping("**/admin/imagem/{idpessoa}")
 	/**
 	 *
+	 * @param pega o id da pessoa
 	 * 
+	 * @return pra pagina para adicionar imagem ao usuario
 	 */
 	public ModelAndView carregarImagem(@PathVariable("idpessoa") Long idpessoa) {
 		
@@ -273,12 +281,34 @@ public class ControllerMaster {
 	@PostMapping(value = "**/admin/FileUpload") /* mapeia a url */
 	@ResponseBody/* Descricao da resposta */
 	/**
-	 * faz upload do arquivo da tabela de dados unicos
+	 * faz upload da imagem em base64 para o pessoa e sem comprometer os outros dados
 	 */
 	public ResponseEntity<Pessoa> salvarImagem(@RequestBody Pessoa pessoa) {//Recebe os dados para salvar
 		
-		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));//antes de salvar vai carregar o objeto tel pro pessoa pra nao dar erro de cascade
+		//antes de salvar vai carregar o objeto tel pro pessoa pra nao dar erro de cascade
+		pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId()));
 		
+		//carrega todos os dados so nao a imagem, serve para quando atualizar a
+		//imagem nao ser perdido esses dados
+		Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
+		pessoa.setArquivo(pessoaTempo.getArquivo());
+		pessoa.setTipoFileArquivo(pessoaTempo.getTipoFileArquivo());
+		pessoa.setNomeFileArquivo(pessoaTempo.getNomeFileArquivo());
+		pessoa.setBairro(pessoaTempo.getBairro());
+		pessoa.setCargo(pessoaTempo.getCargo());
+		pessoa.setCep(pessoaTempo.getCep());
+		pessoa.setCidade(pessoaTempo.getCep());
+		pessoa.setDataNascimento(pessoaTempo.getDataNascimento());
+		pessoa.setEmail(pessoaTempo.getEmail());
+		pessoa.setIbge(pessoaTempo.getIbge());
+		pessoa.setIdade(pessoaTempo.getIdade());
+		pessoa.setNome(pessoaTempo.getNome());
+		pessoa.setRua(pessoaTempo.getRua());
+		pessoa.setSexo(pessoaTempo.getSexo());
+		pessoa.setSobrenome(pessoaTempo.getSobrenome());
+		pessoa.setUf(pessoaTempo.getUf());
+		
+		//salva os dados, todos foram carregado n front e esta sendo carregado novamente aqui, so nao o arquivo
 		Pessoa pessoaImg = pessoaRepository.saveAndFlush(pessoa);
 		
 		return new ResponseEntity<Pessoa>(pessoaImg, HttpStatus.CREATED);
