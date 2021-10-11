@@ -2,7 +2,7 @@
 
 
 <h2>Tecnologias Usadas:</h2>
-<h3>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize</h3>
+<h3>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL e Materialize</h3>
 
 <h2>Sistema Web não responsivo</h2>
 
@@ -18,7 +18,7 @@
 <h4>Nome e Sobrenome(com um tamanho maximo definido de caracteres);</h4>
 <h4>Profissao(por selecionador que carrega do banco de dados em uma tabela relacionada);</h5>
 <h4>Cargo(por selecionador que carrega por um enum);</h4>
-<h4>Cep e Derivados, Usando aqui inclusive a WebService do cep que se adicionado um cep valido completa os outros campos automanticamente(tem im link no form pra caso queira gerar um cep valido);</h4>
+<h4>Cep e Derivados, Usando aqui inclusive a WebService do cep que se adicionado um cep valido completa os outros campos automanticamente(tem um link no form pra caso queira gerar um cep valido);</h4>
 <h4>Telefone com um relacionamento com outra tabela podendo varios telefones pra uma pessoa;</h4>
 <h4>Imagem de usuario(em base64 no usuario);</h4>
 <h3>ATUALIZAR:</h3>
@@ -36,7 +36,7 @@
 <h2>crie o banco com o nome spring-boot-thymeleaf e o usuario postgres</h2>
 <h2>DICA: não esqueca de no pom.xml colocar o driver de acordo com a versao do teu banco</h2>
 <h2>querys a seguir apos o primeiro start do sistema</h2>
--- deleta o unique do usuariorole para poder depois cria-lo novamente e assim poder ter varios usuarios cadastrados em um role <br>
+-- deleta o unique do usuario role para poder depois cria-lo novamente e assim poder ter varios usuarios cadastrados em um role <br>
 ALTER TABLE usuarios_role DROP<br>
   CONSTRAINT uk_krvk2qx218dxa3ogdyplk0wxw;<br><br>
 
