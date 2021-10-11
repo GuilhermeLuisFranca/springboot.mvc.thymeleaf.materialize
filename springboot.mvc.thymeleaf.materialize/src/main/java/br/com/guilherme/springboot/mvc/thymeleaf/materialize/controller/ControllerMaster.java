@@ -215,9 +215,6 @@ public class ControllerMaster {
 			}//se nao tiver arquivo e tambem nao tiver id nao faz nada
 		}
 		
-		//pra nao perder a imagem
-		//Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
-		
 		ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
 		
 		pessoaRepository.save(pessoa);//salva os dados
