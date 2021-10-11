@@ -159,7 +159,7 @@ public class ControllerMaster {
 		
 		
 		
-		//se ja existir alguma pessoa com o mesmo login
+		//se ja existir alguma pessoa com o mesmo email
 		if(pessoaRepository.verificarEmail(pessoa.getEmail()) != null && !pessoaRepository.verificarEmail(pessoa.getEmail()).isEmpty()) {
 			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
 			
@@ -177,14 +177,31 @@ public class ControllerMaster {
 		
 		
 		
-		if(file.getSize() > 0) {//se tiver arquivo faz o upload
+		//se tiver arquivo
+		if(file.getSize() > 0) {
 			
-			pessoa.setArquivo(file.getBytes());
+			//se tiver arquivo e id grava um novo mantem a imagem
+			if(pessoa.getId() != null && pessoa.getId() > 0) {
 			
-			pessoa.setTipoFileArquivo(file.getContentType());
-			pessoa.setNomeFileArquivo(file.getOriginalFilename());
+				pessoa.setArquivo(file.getBytes());
+				pessoa.setTipoFileArquivo(file.getContentType());
+				pessoa.setNomeFileArquivo(file.getOriginalFilename());
+				
+				Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
+				pessoa.setImagem(pessoaTempo.getImagem());
 			
-		} else {//se nao tiver pega o ja existente em caso de edicao
+			}
+			
+			//se tiver arquivo e nao tiver id apenas grava um novo
+			else {
+				
+				pessoa.setArquivo(file.getBytes());
+				pessoa.setTipoFileArquivo(file.getContentType());
+				pessoa.setNomeFileArquivo(file.getOriginalFilename());
+				
+			}
+			
+		} else {//se nao tiver o arquivo e tiver id pega o ja existente e grava
 			if(pessoa.getId() != null && pessoa.getId() > 0) {//editando
 				
 				Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
@@ -193,12 +210,13 @@ public class ControllerMaster {
 				pessoa.setTipoFileArquivo(pessoaTempo.getTipoFileArquivo());
 				pessoa.setNomeFileArquivo(pessoaTempo.getNomeFileArquivo());
 				
-			}
+				pessoa.setImagem(pessoaTempo.getImagem());
+				
+			}//se nao tiver arquivo e tambem nao tiver id nao faz nada
 		}
 		
 		//pra nao perder a imagem
-		Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
-		pessoa.setImagem(pessoaTempo.getImagem());
+		//Pessoa pessoaTempo = pessoaRepository.findById(pessoa.getId()).get();
 		
 		ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
 		
