@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Editar Imagem</title>
+<link rel="shortcut icon" type="image-x/png" href="https://www.thymeleaf.org/doc/images/thymeleaf.png">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 *{
@@ -63,7 +64,8 @@ function uploadFile() {
 			}).done(function(response) {
 				window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
 			}).fail(function(xhr, status, errorThrown) {
-				alert("Error: " + xhr.responseText);
+				//alert("Error: " + xhr.responseText);
+				 window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
 			});
 	    };
 	    
@@ -88,7 +90,8 @@ function uploadFile() {
 	    }).done(function(response) {
 	        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
 	    }).fail(function(xhr, status, errorThrown) {
-	        alert("Error: " + xhr.responseText);
+	       // alert("Error: " + xhr.responseText);
+	        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
 	    });
 	}
     
