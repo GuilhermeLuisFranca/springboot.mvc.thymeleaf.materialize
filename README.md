@@ -2,7 +2,7 @@
 
 
 <h2>Tecnologias Usadas:</h2>
-<h3>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL e Materialize</h3>
+<h3>SpringBoot, SpringSecurity, Thymeleaf, PostgesSQL, Materialize e JPA com Hibernate</h3>
 
 <h2>Sistema Web não responsivo</h2>
 
