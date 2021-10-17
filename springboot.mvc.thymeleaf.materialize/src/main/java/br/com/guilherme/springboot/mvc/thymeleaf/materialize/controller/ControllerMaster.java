@@ -159,9 +159,31 @@ public class ControllerMaster {
 		
 		
 		
+		/**
+		 * validando o formato do email
+		 */
+		String str = pessoa.getEmail();//email informado
+		String[] splitstr = str.split("@");//separando em duas partes, posicao 0 tudo antes do @ e posicao 1 tudo depois
+		if(splitstr[1] != "gmail.com"){//se tudo que vier depois do @ for diferente de gmail.com
+			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
+			
+			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
+			
+			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
+			view.addObject("pessoaobj", pessoa);
+			view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+			
+			view.addObject("msg", "E-Mail invalido, deve terminar com @gmail.com");
+			
+			return view;
+        }
+		
+		
+		
 		//se ja existir alguma pessoa com o mesmo email
 		if(pessoaRepository.verificarEmail(pessoa.getEmail()) != null && !pessoaRepository.verificarEmail(pessoa.getEmail()).isEmpty()) {
 			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
+			
 			
 			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
 			
