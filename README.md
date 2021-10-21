@@ -13,7 +13,7 @@
 <h3>INSERIR:</h3>
 <h4>Arquivo(qualquer tipo, salvo no banco de dados em oid, podendo depois baixar ele novamente);</h4>
 <h4>Data de nascimento que ate faz automanticamente o calculo de idade dado a data de nascimento(esta idade e validada no back-end com a regra que so pode ter entre 18 a 100 anos);</h4>
-<h4>E-Mail apenas com uma valicao bem simples pro gMail usando expressao regular (e uma validacao de unique);</h4>
+<h4>E-Mail apenas com uma valicao bem simples pro gMail (e uma validacao de unique);</h4>
 <h4>Sexo(por selecionador que carrega direto do Front-End);</h4>
 <h4>Nome e Sobrenome(com um tamanho maximo definido de caracteres);</h4>
 <h4>Profissao(por selecionador que carrega do banco de dados em uma tabela relacionada);</h5>
