@@ -27,6 +27,10 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	@Query(value = "select c from Pessoa c where upper(trim(c.nome)) like %?1% ORDER BY c.id")
 	List<Pessoa> listarAllByName(String nome);
 			
+	//todos os dados de um determinado id
+	@Query(value = "SELECT m.email FROM Pessoa m WHERE m.id = ?1")
+	String emailById(Long id);
+			
 	//verificando se ja existe o email passado
 	@Query(value = "SELECT m FROM Pessoa m WHERE m.email = ?1")
 	List<Pessoa> verificarEmail(String email);

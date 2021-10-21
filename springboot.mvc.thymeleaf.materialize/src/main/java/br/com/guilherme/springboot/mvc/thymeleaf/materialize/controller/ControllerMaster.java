@@ -2,6 +2,7 @@ package br.com.guilherme.springboot.mvc.thymeleaf.materialize.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,7 +165,8 @@ public class ControllerMaster {
 		 */
 		String str = pessoa.getEmail();//email informado
 		String[] splitstr = str.split("@");//separando em duas partes, posicao 0 tudo antes do @ e posicao 1 tudo depois
-		if(splitstr[1] != "gmail.com"){//se tudo que vier depois do @ for diferente de gmail.com
+		String[] gmail = new String[]{"gmail.com", "hotmail.com"};//posicao 0 valida gmail, posicao 1 valida hotmail.com
+		if(!splitstr[1].equals(gmail[0])){//se tudo que vier depois do @ for diferente de gmail.com
 			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
 			
 			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
@@ -177,25 +179,6 @@ public class ControllerMaster {
 			
 			return view;
         }
-		
-		
-		
-		//se ja existir alguma pessoa com o mesmo email
-		if(pessoaRepository.verificarEmail(pessoa.getEmail()) != null && !pessoaRepository.verificarEmail(pessoa.getEmail()).isEmpty()) {
-			ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
-			
-			
-			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
-			
-			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
-			view.addObject("pessoaobj", pessoa);
-			view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
-			
-			view.addObject("msg", "Este E-Mail ja foi usado!");
-			
-			
-			return view;
-		}
 		
 		
 		
@@ -236,6 +219,60 @@ public class ControllerMaster {
 				
 			}//se nao tiver arquivo e tambem nao tiver id nao faz nada
 		}
+		
+		
+		
+		//se tiver id
+		if(pessoa.getId() != null && pessoa.getId() > 0) {
+		
+			//se tiver id verifica se o email passado e o mesmo do usuario se sim grava
+			if(pessoaRepository.emailById(pessoa.getId()).equals(pessoa.getEmail())) {
+			
+				ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
+				
+				pessoaRepository.save(pessoa);//salva os dados
+				
+				return view;
+			
+			}
+			
+			//caso contrario se tiver id mas o email passado nao e o mesmo do usuario faz verificacao de unique
+			else if(pessoaRepository.verificarEmail(pessoa.getEmail()) != null && !pessoaRepository.verificarEmail(pessoa.getEmail()).isEmpty()) {
+				
+				ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
+				
+				
+				Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
+				
+				view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
+				view.addObject("pessoaobj", pessoa);
+				view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+				
+				view.addObject("msg", "Este E-Mail ja foi usado!");
+				
+				
+				return view;
+				
+			}//se tiver id o email nao for e mesmo do usuario e nao for um ja existente segue
+		
+		} else {//se nao tiver id
+			//se nao tiver id mas se ja existir alguma pessoa com o mesmo email
+			if(pessoaRepository.verificarEmail(pessoa.getEmail()) != null && !pessoaRepository.verificarEmail(pessoa.getEmail()).isEmpty()) {
+				ModelAndView view = new ModelAndView("cadastro/cadastroPessoa.html");
+				
+				Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
+				
+				view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
+				view.addObject("pessoaobj", pessoa);
+				view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
+				
+				view.addObject("msg", "Este E-Mail ja foi usado!");
+				
+				
+				return view;//se nao tiver id e o email ainda nao existe segue
+			}
+		}
+		
 		
 		ModelAndView view = new ModelAndView("cadastro/carregarpagpessoa");
 		
