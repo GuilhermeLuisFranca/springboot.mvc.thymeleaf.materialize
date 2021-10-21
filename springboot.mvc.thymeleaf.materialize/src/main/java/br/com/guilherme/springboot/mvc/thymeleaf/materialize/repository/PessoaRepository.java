@@ -34,7 +34,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	//verificando se ja existe o email passado
 	@Query(value = "SELECT m FROM Pessoa m WHERE m.email = ?1")
 	List<Pessoa> verificarEmail(String email);
-
+ 
 	//lista os usuarios pesquisados por nome usando paginacao
 	default Page<Pessoa> listarAllByNamePage(String nome, Pageable pageable) {
 		

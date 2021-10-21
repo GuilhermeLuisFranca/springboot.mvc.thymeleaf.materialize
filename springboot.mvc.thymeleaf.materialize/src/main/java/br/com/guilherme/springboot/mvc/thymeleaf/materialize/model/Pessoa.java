@@ -45,7 +45,7 @@ public class Pessoa implements Serializable {
 	@NotNull(message = "Sobrenome não pode ser nulo")
 	@NotEmpty(message = "Sobrenome não pode estar vazio")
 	@Column(length = 30)
-	private String sobrenome;
+	private String sobrenome; 
 
 	/*esta expressao nao esta muito boa por isso fiz uma validacao bem melhor no controller, so deixei aqui pra nao joga fora
 	@Email(message = "E-Mail não valido")

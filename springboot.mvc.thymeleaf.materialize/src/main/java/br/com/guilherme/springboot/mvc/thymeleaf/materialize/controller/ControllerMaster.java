@@ -171,7 +171,7 @@ public class ControllerMaster {
 			
 			Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));//passa para a tela todos os cadastros
 			
-			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista
+			view.addObject("pessoas", pessoasIterable);//apos salvar carrega a lista 
 			view.addObject("pessoaobj", pessoa);
 			view.addObject("profissoes", profissaoRepository.listarAll());//lista todas as profissoes
 			
