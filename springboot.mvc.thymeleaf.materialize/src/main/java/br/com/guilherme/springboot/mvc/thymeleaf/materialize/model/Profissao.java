@@ -14,7 +14,6 @@ public class Profissao implements Serializable {
 	private Long id;
 	
 	private String nome;
-
 	
 	
 	public Long getId() {

@@ -19,5 +19,4 @@ public interface ProfissaoRepository extends CrudRepository<Profissao, Long> {
 	
 	
 	
-	
 }

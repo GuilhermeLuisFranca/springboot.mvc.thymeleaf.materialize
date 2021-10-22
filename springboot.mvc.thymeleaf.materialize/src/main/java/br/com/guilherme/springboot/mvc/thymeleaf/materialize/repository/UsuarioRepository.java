@@ -16,3 +16,4 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 	Usuario findUserByLogin(String login);
 	
 }
+

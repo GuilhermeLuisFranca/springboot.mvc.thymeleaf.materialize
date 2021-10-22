@@ -34,4 +34,4 @@ public class ImplementacaoUserDetailsService implements UserDetailsService {
 				usuario.getAuthorities());
 	}
 
-}
+} 

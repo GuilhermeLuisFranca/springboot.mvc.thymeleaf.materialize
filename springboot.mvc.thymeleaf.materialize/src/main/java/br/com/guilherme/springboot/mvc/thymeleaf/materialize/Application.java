@@ -22,7 +22,7 @@ public class Application implements WebMvcConfigurer {
 
 	//execucao do sistema
 	//*
-	 public static void main(String[] args) { SpringApplication.run(Application.class, args);}
+	public static void main(String[] args) { SpringApplication.run(Application.class, args);}
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

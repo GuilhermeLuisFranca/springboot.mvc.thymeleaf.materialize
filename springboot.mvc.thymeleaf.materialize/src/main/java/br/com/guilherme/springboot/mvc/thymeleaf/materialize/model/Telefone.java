@@ -33,7 +33,6 @@ public class Telefone implements Serializable {
 	private Pessoa pessoa;
 
 	
-	
 	//getters e setters
 	public Long getId() {
 		return id;

@@ -51,7 +51,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter{
 		auth.userDetailsService(implementacaoUserDetailsService)
 		.passwordEncoder(new BCryptPasswordEncoder());
 		
-		/*
+		/**
 		auth.inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder())
 		.withUser("admin")
 		.password("$2a$10$hiG9rhz0PDQCAz0h6.RqoOwYAGXFzFGYc0iSepsgujnX8DgKLRWjG")

@@ -47,7 +47,7 @@ public class Pessoa implements Serializable {
 	@Column(length = 30)
 	private String sobrenome; 
 
-	/*esta expressao nao esta muito boa por isso fiz uma validacao bem melhor no controller, so deixei aqui pra nao joga fora
+	/*
 	@Email(message = "E-Mail não valido")
 	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})$", message = "E-Mail não valido")*/
 	@NotNull(message = "E-Mail não pode ser nulo")

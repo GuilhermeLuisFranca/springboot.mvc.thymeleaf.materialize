@@ -395,7 +395,7 @@ public class ControllerMaster {
 	/**
 	 * pega o id e exclui todos os dados deste id em seguida lista os cadastros
 	 * 
-	 * @param idpessoa - pega o id da pessoa pra poder deletar
+	 * @param idpessoa - pega o id da pessoa pra poder deletar 
 	 * 
 	 * @return pra uma tela que retorna para o metodo que carrega a tela de cadastro
 	 */

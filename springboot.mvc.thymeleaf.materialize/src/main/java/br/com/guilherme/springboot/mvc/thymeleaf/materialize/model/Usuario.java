@@ -37,7 +37,6 @@ public class Usuario implements UserDetails {
 					table = "role"))//cria table de acesso de user
 	private List<Role> roles;//roles da separacao de acessos para cada user
 	
-	
 	public Long getId() {
 		return id;
 	}

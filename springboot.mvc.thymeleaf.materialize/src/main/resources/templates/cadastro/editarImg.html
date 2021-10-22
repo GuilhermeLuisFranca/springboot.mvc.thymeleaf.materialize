@@ -15,7 +15,7 @@
 html, body{
     height: 100%;
     background-attachment: fixed;
-    /*background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg");*/
+    /*background-image: url("https://www.showmetech.com.br/wp-content/uploads//2017/01/outrun_wallpaper__10_-2017-01-25-0516.jpg"); */
     background-color: #0D1117;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -31,7 +31,8 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 <body>
 	<form class="col-sm-8 img-upload-section" th:object="${pessoaobj}">
 		<input style="display: none;" name="id" id="id" type="text" th:field="*{id}" readonly="readonly"><!-- pra saber qual o id a ser editado -->
-		<input style="display: none;" id="imgVazio" type="text" th:field="*{imagem}" readonly="readonly"><!-- pra se nao selecionar new imagem ira carregar a ja existente -->
+		<input style="display: none;" name="imgVazio" id="imgVazio" type="text" th:field="*{imagem}" readonly="readonly"><!-- pra se nao selecionar new imagem ira carregar a ja existente -->
+	    <input style="display: none;" name="imgDefault" id="imgDefault" type="text" value="http://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg" readonly="readonly"><!-- pra se nao selecionar new imagem e nao houver uma ja cadastrado mantera a padrao -->
 	    <input name="imagem" type="file" accept="image/*" id="menu_images" /><br>
 	    <img width="200" height="200" id="menu_image" class="preview_img" th:src="*{imagem}"/><br>
 	    <button type="button" onclick="uploadFile();" style="width: 120px; height: 40px; font-size: 25px;">Submit</button>
@@ -39,7 +40,6 @@ body::-webkit-scrollbar-thumb{background-color: rgb(0, 255, 195)}
 
 </body>
 <script type="text/javascript">
-
 function uploadFile() {
 	var arq = $("#menu_images").val();
 
@@ -62,10 +62,10 @@ function uploadFile() {
 		        	imagem : reader.result}),
 				contentType : "application/json; charset=utf-8"
 			}).done(function(response) {
+				alert("Sucesso ao gravar nova imagem");
 				window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
 			}).fail(function(xhr, status, errorThrown) {
-				//alert("Error: " + xhr.responseText);
-				 window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
+				alert("Error: " + xhr.responseText);
 			});
 	    };
 	    
@@ -79,20 +79,38 @@ function uploadFile() {
 	//se nao existir arquivo vai pega o que o id ja tem e vai usa-lo
     if (arq == null || arq != null && arq.trim() == ''){
 		var imagemVazia = $("#imgVazio").val();
+		var imgDefault = $("#imgDefault").val();
 		
-		$.ajax({
-	        method : "POST",
-	        url : "admin/FileUpload",
-	        data : JSON.stringify({ 
-	        	id : id,
-	        	imagem : imagemVazia}),
-	        contentType : "application/json; charset=utf-8"
-	    }).done(function(response) {
-	        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
-	    }).fail(function(xhr, status, errorThrown) {
-	       // alert("Error: " + xhr.responseText);
-	        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
-	    });
+		if(imagemVazia == null || imagemVazia != null && imagemVazia.trim() == ''){
+			$.ajax({
+		        method : "POST",
+		        url : "admin/FileUpload",
+		        data : JSON.stringify({ 
+		        	id : id,
+		        	imagem : imagemDefault}),
+		        contentType : "application/json; charset=utf-8"
+		    }).done(function(response) {
+		    	alert("Nao gravado uma nova mas mantendo a padrao")
+		        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
+		    }).fail(function(xhr, status, errorThrown) {
+		        alert("Error: " + xhr.responseText);
+		    });
+		} else {
+			$.ajax({
+		        method : "POST",
+		        url : "admin/FileUpload",
+		        data : JSON.stringify({ 
+		        	id : id,
+		        	imagem : imagemVazia}),
+		        contentType : "application/json; charset=utf-8"
+		    }).done(function(response) {
+		    	alert("nao gravado uma nova mas mantendo a ja gravada")
+		        window.location.href = "/admin/cadastroPessoa";//recarrega apos gravar
+		    }).fail(function(xhr, status, errorThrown) {
+		        alert("Error: " + xhr.responseText);
+		    });
+		}
+		
 	}
     
 }

@@ -14,7 +14,6 @@ public enum Cargo {
 	private Cargo(String nome) {
 		this.nome = nome;
 	}
-	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
