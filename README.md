@@ -48,7 +48,7 @@ ALTER TABLE usuarios_role<br>
 INSERT INTO role(id, nome_role) VALUES (1, 'ROLE_ADMIN');<br>
 INSERT INTO role(id, nome_role) VALUES (2, 'ROLE_USER');<br><br>
 
--- inserindo dois usuarios bases para poder acessar o sistema admin(login: admin password: admin) e user(login: user passord: 123) <br>
+-- inserindo dois usuarios bases para poder acessar o sistema admin(login: admin password: admin) e user(login: user passord: 123)<br>
 INSERT INTO usuario(id, login, senha) VALUES (1, 'admin', '$2a$10$XQ44XYOBateY8V.sHCgmhOqh8u6PxaUjKgRfIj2Xu1x9.yqHV9cty');<br>
 INSERT INTO usuario(id, login, senha) VALUES (2, 'user', '$2a$10$7/RXuG4fbbW1wffaYPnHLeKVtlTrY1gDUlhw2T8AMMyw5Ru4aT2GK');<br><br>
 
